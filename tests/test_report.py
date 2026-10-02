@@ -34,7 +34,7 @@ def test_aggregate_writes_all_tables(runs_dir, tmp_path):
               "table_ablation", "table_runtime"):
         assert f"{t}.tex" in files and f"{t}.md" in files
     assert "SUMMARY.md" in files and "convergence_fashion_mnist_4q.csv" in files
-    assert "Poly-2 SVM" in (tmp_path / "table_main.tex").read_text()
+    assert "Poly-2 SVM" in (tmp_path / "latex" / "table_main.tex").read_text()
 
 
 def test_make_figures(runs_dir, tmp_path, monkeypatch):

@@ -117,8 +117,10 @@ def _pct(m, s=None, digits=1):
 
 
 def _write(out: Path, name: str, latex: str, md: str) -> None:
-    (out / f"{name}.tex").write_text(latex)
-    (out / f"{name}.md").write_text(md)
+    """Tables go to <out>/latex/<name>.tex and <out>/markdown/<name>.md."""
+    for sub, text, ext in (("latex", latex, "tex"), ("markdown", md, "md")):
+        (out / sub).mkdir(parents=True, exist_ok=True)
+        (out / sub / f"{name}.{ext}").write_text(text)
 
 
 # --------------------------------------------------------------------------- #
@@ -439,14 +441,16 @@ def figure_data(full: dict, out: Path) -> None:
             continue
         G = max(len(h) for h in hs)
         M = np.array([h + [h[-1]] * (G - len(h)) for h in hs])
-        with open(out / f"convergence_{name}.csv", "w", newline="") as f:
+        (out / "data").mkdir(parents=True, exist_ok=True)
+        with open(out / "data" / f"convergence_{name}.csv", "w", newline="") as f:
             w = csv.writer(f)
             w.writerow(["generation", "hv_mean", "hv_std", "hv_min", "hv_max"])
             for g in range(G):
                 col = M[:, g]
                 w.writerow([g, f"{col.mean():.5f}", f"{col.std(ddof=1) if len(col) > 1 else 0:.5f}",
                             f"{col.min():.5f}", f"{col.max():.5f}"])
-    with open(out / "accuracy_by_config.csv", "w", newline="") as f:
+    (out / "data").mkdir(parents=True, exist_ok=True)
+    with open(out / "data" / "accuracy_by_config.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["config", "dataset", "qubits", "method", "mean", "std"])
         for name in sorted(full, key=_sort_key):
@@ -552,8 +556,8 @@ def aggregate(results_root: Path, out_dir: Path) -> list[str]:
     parts = ["# Results summary\n", "Runs: " + ", ".join(f"{v}={sum(len(s) for s in c.values())}" for v, c in runs.items()) + "\n"]
     for t in ["table_main", "table_stats", "table_pareto", "table_noise", "table_readout",
               "table_readout_sweep", "table_shots", "table_ensemble", "table_ablation", "table_runtime"]:
-        p = out_dir / f"{t}.md"
+        p = out_dir / "markdown" / f"{t}.md"
         if p.exists():
             parts.append(f"\n## {t}\n\n" + p.read_text())
     (out_dir / "SUMMARY.md").write_text("".join(parts))
-    return sorted(p.name for p in out_dir.iterdir())
+    return sorted(p.name for p in out_dir.rglob("*") if p.is_file())

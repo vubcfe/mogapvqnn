@@ -142,9 +142,9 @@ def cmd_suite(a) -> None:
     # longest jobs first, so the tail of the schedule is short jobs
     jobs.sort(key=lambda j: -estimated_cost(suite.run_config(j[1], j[2], j[0]), j[0] == "full"))
     print(f"{len(jobs)} runs to do, {a.jobs} in parallel")
-    log_dir = results / "logs"
+    log_dir = results / "_local" / "logs"       # per-run logs (not version-controlled)
     log_dir.mkdir(parents=True, exist_ok=True)
-    env = dict(os.environ, **THREAD_ENV, PYTHONUNBUFFERED="1")   # live progress in results/logs
+    env = dict(os.environ, **THREAD_ENV, PYTHONUNBUFFERED="1")   # live progress in results/_local/logs
 
     def launch(job):
         variant, conf, seed, name = job
