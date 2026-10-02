@@ -1,0 +1,12 @@
+{
+  "title": "mogapvqnn: noise-aware architecture search and benchmarks for post-variational quantum neural networks",
+  "description": "Code, configurations, run records and analysis scripts for the article 'What Limits Post-Variational Quantum Neural Networks? Expressivity Bounds, Shot Noise and Noise-Aware Architecture Search under Amplitude Encoding' (submitted to Physical Review A). Includes a validated NumPy simulator with classical shadows, trajectory noise and readout mitigation, NSGA-II architecture search, baselines, 182 run records, post-hoc studies, and scripts that regenerate every table and figure.",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {"name": "Bui, Cao Vu", "affiliation": "FPT University"},
+    {"name": "Nguyen, Van-Nam", "affiliation": "FPT University"},
+    {"name": "Nguyen, Hoang-Anh-Vu", "affiliation": "FPT University"}
+  ],
+  "keywords": ["post-variational quantum neural networks", "quantum architecture search", "classical shadows", "amplitude encoding", "readout error mitigation", "NSGA-II", "benchmarking"]
+}

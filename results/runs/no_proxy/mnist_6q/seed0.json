@@ -1,0 +1,1080 @@
+{
+ "name": "mnist_6q",
+ "config": {
+  "dataset": "mnist",
+  "classes": [
+   3,
+   8
+  ],
+  "n_qubits": 6,
+  "n_train": 600,
+  "n_test": 200,
+  "val_fraction": 0.2,
+  "resize": "nearest",
+  "seed": 0,
+  "workers": 4,
+  "search": {
+   "population": 20,
+   "generations": 30,
+   "mutation_rate": 0.2,
+   "angle_sigma": 0.3,
+   "crossover_rate": 1.0,
+   "tournament_k": 3,
+   "n_genes": 8,
+   "allow_identity": true,
+   "epsilon_dominance": 0.005,
+   "proxy_lambda": 0.05,
+   "use_proxy": false,
+   "robust_objective": "proxy",
+   "loop_noise": 0.01,
+   "early_stop_patience": 5,
+   "early_stop_tol": 0.0001,
+   "hv_reference": 1.1
+  },
+  "shadows": {
+   "estimator": "shadow",
+   "observables": "local2",
+   "base_shots": 200,
+   "max_shots": 1000
+  },
+  "classifier": {
+   "C": 1.0,
+   "max_iter": 20000
+  },
+  "phase2": {
+   "noise_levels": [
+    0.01,
+    0.03,
+    0.05
+   ],
+   "noise_model": "local",
+   "max_circuits": 0,
+   "val_samples": 0,
+   "test_samples": 0,
+   "readout_error": 0.0,
+   "readout_mitigation": false,
+   "readout_levels": [
+    0.02
+   ]
+  },
+  "ensemble": {
+   "size": 8,
+   "robust_weight": 0.5
+  },
+  "baselines": {
+   "enabled": [
+    "random",
+    "random_search",
+    "manual",
+    "hea",
+    "pvqnn",
+    "grid",
+    "linear",
+    "poly2"
+   ],
+   "random_search_budget": 0,
+   "manual_layers": 1,
+   "hea_layers": 1,
+   "grid_depths": [
+    2,
+    4,
+    6,
+    8
+   ],
+   "grid_cnot_ratios": [
+    0.0,
+    0.25,
+    0.5
+   ]
+  }
+ },
+ "task": {
+  "classes": [
+   "3",
+   "8"
+  ],
+  "class_names": [
+   "3",
+   "8"
+  ],
+  "image_side": 8,
+  "resize": "nearest",
+  "n_fit": 480,
+  "n_val": 120,
+  "n_test": 200
+ },
+ "phase2_samples": {
+  "val": 120,
+  "test": 200
+ },
+ "observables": [
+  "X0",
+  "Y0",
+  "Z0",
+  "X1",
+  "Y1",
+  "Z1",
+  "X2",
+  "Y2",
+  "Z2",
+  "X3",
+  "Y3",
+  "Z3",
+  "X4",
+  "Y4",
+  "Z4",
+  "X5",
+  "Y5",
+  "Z5",
+  "X0X1",
+  "Z0Z1",
+  "X1X2",
+  "Z1Z2",
+  "X2X3",
+  "Z2Z3",
+  "X3X4",
+  "Z3Z4",
+  "X4X5",
+  "Z4Z5"
+ ],
+ "phase1": {
+  "history": [
+   {
+    "generation": 0,
+    "hv": 0.5581368958176809,
+    "front_size": 5,
+    "best_val_acc": 0.7583333333333333,
+    "mean_val_acc": 0.6879166666666666,
+    "unique_evaluations": 20,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 16.485775469001965
+   },
+   {
+    "generation": 1,
+    "hv": 0.592767812421738,
+    "front_size": 4,
+    "best_val_acc": 0.7583333333333333,
+    "mean_val_acc": 0.7024999999999999,
+    "unique_evaluations": 38,
+    "cache_hit_rate": 0.02564102564102564,
+    "elapsed_s": 33.12161403700884
+   },
+   {
+    "generation": 2,
+    "hv": 0.6192594853493614,
+    "front_size": 4,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7170833333333333,
+    "unique_evaluations": 58,
+    "cache_hit_rate": 0.01694915254237288,
+    "elapsed_s": 50.27385972200136
+   },
+   {
+    "generation": 3,
+    "hv": 0.6192594853493614,
+    "front_size": 5,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7229166666666668,
+    "unique_evaluations": 78,
+    "cache_hit_rate": 0.012658227848101266,
+    "elapsed_s": 67.67958222499874
+   },
+   {
+    "generation": 4,
+    "hv": 0.6241312922614575,
+    "front_size": 3,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7354166666666666,
+    "unique_evaluations": 95,
+    "cache_hit_rate": 0.02564102564102564,
+    "elapsed_s": 81.92939364400809
+   },
+   {
+    "generation": 5,
+    "hv": 0.6272813360881544,
+    "front_size": 3,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.745,
+    "unique_evaluations": 114,
+    "cache_hit_rate": 0.02564102564102564,
+    "elapsed_s": 96.53072423899721
+   },
+   {
+    "generation": 6,
+    "hv": 0.6272813360881544,
+    "front_size": 3,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7479166666666667,
+    "unique_evaluations": 134,
+    "cache_hit_rate": 0.021897810218978103,
+    "elapsed_s": 112.94004690099973
+   },
+   {
+    "generation": 7,
+    "hv": 0.6282204795892813,
+    "front_size": 4,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7516666666666667,
+    "unique_evaluations": 154,
+    "cache_hit_rate": 0.01910828025477707,
+    "elapsed_s": 126.5686929950025
+   },
+   {
+    "generation": 8,
+    "hv": 0.6282204795892813,
+    "front_size": 4,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7537499999999999,
+    "unique_evaluations": 174,
+    "cache_hit_rate": 0.01694915254237288,
+    "elapsed_s": 142.83709071599878
+   },
+   {
+    "generation": 9,
+    "hv": 0.6282204795892813,
+    "front_size": 5,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.755,
+    "unique_evaluations": 194,
+    "cache_hit_rate": 0.015228426395939087,
+    "elapsed_s": 159.65104469200014
+   },
+   {
+    "generation": 10,
+    "hv": 0.6282204795892813,
+    "front_size": 5,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.755,
+    "unique_evaluations": 214,
+    "cache_hit_rate": 0.013824884792626729,
+    "elapsed_s": 173.58259460600675
+   },
+   {
+    "generation": 11,
+    "hv": 0.6282204795892813,
+    "front_size": 5,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.755,
+    "unique_evaluations": 234,
+    "cache_hit_rate": 0.012658227848101266,
+    "elapsed_s": 188.8025255130051
+   },
+   {
+    "generation": 12,
+    "hv": 0.6282204795892813,
+    "front_size": 7,
+    "best_val_acc": 0.8,
+    "mean_val_acc": 0.7579166666666666,
+    "unique_evaluations": 254,
+    "cache_hit_rate": 0.011673151750972763,
+    "elapsed_s": 205.3598434250016
+   }
+  ],
+  "generations_run": 12,
+  "stopped_early": true,
+  "unique_evaluations": 254
+ },
+ "pareto": {
+  "hv": 0.6282204795892813,
+  "hv_3obj": 0.6282204795892813,
+  "size": 7,
+  "val_acc_spread_base_shots": 0.033333333333333326,
+  "val_acc_spread_max_shots": 0.125
+ },
+ "front": [
+  {
+   "key": "H:3:|H:1:|H:2:|H:3:|H:3:|H:2:|CNOT:1,0:|H:1:",
+   "circuit": [
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      1,
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    }
+   ],
+   "text": "H(q3) H(q1) H(q2) H(q3) H(q3) H(q2) CNOT(q1->q0) H(q1)",
+   "depth": 3,
+   "cnot": 1,
+   "gates": 8,
+   "proxy": 0.7788007830714049,
+   "objectives": [
+    0.19999999999999996,
+    0.375,
+    0.125
+   ],
+   "val_acc_base": 0.8,
+   "val_acc": 0.825,
+   "test_acc": 0.84,
+   "phase2": {
+    "val": {
+     "0.0": 0.775,
+     "0.01": 0.8,
+     "0.03": 0.775,
+     "0.05": 0.7833333333333333
+    },
+    "test": {
+     "0.0": 0.84,
+     "0.01": 0.785,
+     "0.03": 0.82,
+     "0.05": 0.76
+    },
+    "robust_val": 0.7861111111111111,
+    "robust_test": 0.7883333333333334
+   }
+  },
+  {
+   "key": "RX:4:1.247655117|H:1:|RZ:1:-0.683007041|RX:2:0.302049331|H:3:|RZ:0:-1.365926268|RZ:2:-0.316654389|H:4:",
+   "circuit": [
+    {
+     "gate": "RX",
+     "wires": [
+      4
+     ],
+     "angle": 1.2476551170604102
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      1
+     ],
+     "angle": -0.6830070408774715
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 0.30204933061154327
+    },
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -1.3659262681173048
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      2
+     ],
+     "angle": -0.31665438863104844
+    },
+    {
+     "gate": "H",
+     "wires": [
+      4
+     ],
+     "angle": null
+    }
+   ],
+   "text": "RX(q4, +1.248) H(q1) RZ(q1, -0.683) RX(q2, +0.302) H(q3) RZ(q0, -1.366) RZ(q2, -0.317) H(q4)",
+   "depth": 2,
+   "cnot": 0,
+   "gates": 8,
+   "proxy": 0.9048374180359595,
+   "objectives": [
+    0.23333333333333328,
+    0.25,
+    0.0
+   ],
+   "val_acc_base": 0.7666666666666667,
+   "val_acc": 0.7833333333333333,
+   "test_acc": 0.825,
+   "phase2": {
+    "val": {
+     "0.0": 0.8083333333333333,
+     "0.01": 0.75,
+     "0.03": 0.7666666666666667,
+     "0.05": 0.725
+    },
+    "test": {
+     "0.0": 0.85,
+     "0.01": 0.76,
+     "0.03": 0.805,
+     "0.05": 0.805
+    },
+    "robust_val": 0.7472222222222222,
+    "robust_test": 0.79
+   }
+  },
+  {
+   "key": "H:0:|CNOT:5,1:|RX:3:1.403515777|H:5:|RX:2:-2.972978629|RZ:4:0.945431542|RZ:2:0.254701157|H:4:",
+   "circuit": [
+    {
+     "gate": "H",
+     "wires": [
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      5,
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      3
+     ],
+     "angle": 1.4035157769340314
+    },
+    {
+     "gate": "H",
+     "wires": [
+      5
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": -2.9729786291359623
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      4
+     ],
+     "angle": 0.9454315422276824
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      2
+     ],
+     "angle": 0.254701157103455
+    },
+    {
+     "gate": "H",
+     "wires": [
+      4
+     ],
+     "angle": null
+    }
+   ],
+   "text": "H(q0) CNOT(q5->q1) RX(q3, +1.404) H(q5) RX(q2, -2.973) RZ(q4, +0.945) RZ(q2, +0.255) H(q4)",
+   "depth": 2,
+   "cnot": 1,
+   "gates": 8,
+   "proxy": 0.8187307530779818,
+   "objectives": [
+    0.22499999999999998,
+    0.25,
+    0.125
+   ],
+   "val_acc_base": 0.775,
+   "val_acc": 0.7,
+   "test_acc": 0.755,
+   "phase2": {
+    "val": {
+     "0.0": 0.6833333333333333,
+     "0.01": 0.6416666666666667,
+     "0.03": 0.6666666666666666,
+     "0.05": 0.7083333333333334
+    },
+    "test": {
+     "0.0": 0.73,
+     "0.01": 0.77,
+     "0.03": 0.745,
+     "0.05": 0.745
+    },
+    "robust_val": 0.6722222222222222,
+    "robust_test": 0.7533333333333334
+   }
+  },
+  {
+   "key": "RX:2:-2.594008344|H:2:|RZ:0:-0.677192588|RX:4:-2.846614815|H:2:|RZ:0:-1.166785862|H:2:|H:1:",
+   "circuit": [
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": -2.594008343860509
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -0.6771925878987144
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      4
+     ],
+     "angle": -2.8466148146262396
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -1.166785861552612
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    }
+   ],
+   "text": "RX(q2, -2.594) H(q2) RZ(q0, -0.677) RX(q4, -2.847) H(q2) RZ(q0, -1.167) H(q2) H(q1)",
+   "depth": 4,
+   "cnot": 0,
+   "gates": 8,
+   "proxy": 0.8187307530779818,
+   "objectives": [
+    0.21666666666666667,
+    0.5,
+    0.0
+   ],
+   "val_acc_base": 0.7833333333333333,
+   "val_acc": 0.7666666666666667,
+   "test_acc": 0.86,
+   "phase2": {
+    "val": {
+     "0.0": 0.7666666666666667,
+     "0.01": 0.7916666666666666,
+     "0.03": 0.8,
+     "0.05": 0.7833333333333333
+    },
+    "test": {
+     "0.0": 0.835,
+     "0.01": 0.825,
+     "0.03": 0.79,
+     "0.05": 0.785
+    },
+    "robust_val": 0.7916666666666666,
+    "robust_test": 0.7999999999999999
+   }
+  },
+  {
+   "key": "H:2:|H:5:|H:1:|RX:4:-2.846614815|RZ:0:-1.486727726|RZ:3:-2.989598955|RZ:5:3.090351069|CNOT:0,4:",
+   "circuit": [
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      5
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      4
+     ],
+     "angle": -2.8466148146262396
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -1.4867277262090313
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -2.9895989549837125
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      5
+     ],
+     "angle": 3.0903510688324918
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      0,
+      4
+     ],
+     "angle": null
+    }
+   ],
+   "text": "H(q2) H(q5) H(q1) RX(q4, -2.847) RZ(q0, -1.487) RZ(q3, -2.990) RZ(q5, +3.090) CNOT(q0->q4)",
+   "depth": 2,
+   "cnot": 1,
+   "gates": 8,
+   "proxy": 0.8187307530779818,
+   "objectives": [
+    0.22499999999999998,
+    0.25,
+    0.125
+   ],
+   "val_acc_base": 0.775,
+   "val_acc": 0.7833333333333333,
+   "test_acc": 0.78,
+   "phase2": {
+    "val": {
+     "0.0": 0.775,
+     "0.01": 0.7916666666666666,
+     "0.03": 0.7666666666666667,
+     "0.05": 0.8083333333333333
+    },
+    "test": {
+     "0.0": 0.835,
+     "0.01": 0.805,
+     "0.03": 0.815,
+     "0.05": 0.79
+    },
+    "robust_val": 0.7888888888888889,
+    "robust_test": 0.8033333333333333
+   }
+  },
+  {
+   "key": "I|H:1:|RZ:3:-1.149147528|CNOT:0,5:|RZ:0:-1.486727726|RZ:3:-2.989598955|I|H:1:",
+   "circuit": [
+    {
+     "gate": "I",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -1.1491475275671914
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      0,
+      5
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -1.4867277262090313
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -2.9895989549837125
+    },
+    {
+     "gate": "I",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    }
+   ],
+   "text": "H(q1) RZ(q3, -1.149) CNOT(q0->q5) RZ(q0, -1.487) RZ(q3, -2.990) H(q1)",
+   "depth": 2,
+   "cnot": 1,
+   "gates": 6,
+   "proxy": 0.8187307530779818,
+   "objectives": [
+    0.22499999999999998,
+    0.25,
+    0.125
+   ],
+   "val_acc_base": 0.775,
+   "val_acc": 0.7916666666666666,
+   "test_acc": 0.865,
+   "phase2": {
+    "val": {
+     "0.0": 0.775,
+     "0.01": 0.7666666666666667,
+     "0.03": 0.775,
+     "0.05": 0.7666666666666667
+    },
+    "test": {
+     "0.0": 0.82,
+     "0.01": 0.85,
+     "0.03": 0.795,
+     "0.05": 0.835
+    },
+    "robust_val": 0.7694444444444445,
+    "robust_test": 0.8266666666666667
+   }
+  },
+  {
+   "key": "RX:2:-2.594008344|H:2:|RZ:0:-0.677192588|I|H:3:|RZ:0:-1.365926268|CNOT:1,5:|H:4:",
+   "circuit": [
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": -2.594008343860509
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -0.6771925878987144
+    },
+    {
+     "gate": "I",
+     "wires": [
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -1.3659262681173048
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      1,
+      5
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      4
+     ],
+     "angle": null
+    }
+   ],
+   "text": "RX(q2, -2.594) H(q2) RZ(q0, -0.677) H(q3) RZ(q0, -1.366) CNOT(q1->q5) H(q4)",
+   "depth": 2,
+   "cnot": 1,
+   "gates": 7,
+   "proxy": 0.8187307530779818,
+   "objectives": [
+    0.22499999999999998,
+    0.25,
+    0.125
+   ],
+   "val_acc_base": 0.775,
+   "val_acc": 0.8166666666666667,
+   "test_acc": 0.8,
+   "phase2": {
+    "val": {
+     "0.0": 0.7333333333333333,
+     "0.01": 0.775,
+     "0.03": 0.775,
+     "0.05": 0.6833333333333333
+    },
+    "test": {
+     "0.0": 0.81,
+     "0.01": 0.795,
+     "0.03": 0.79,
+     "0.05": 0.765
+    },
+    "robust_val": 0.7444444444444445,
+    "robust_test": 0.7833333333333333
+   }
+  }
+ ],
+ "ensembles": {
+  "greedy": {
+   "members": [
+    0,
+    1,
+    5,
+    6,
+    4,
+    3,
+    2
+   ],
+   "val_acc": 0.8333333333333334,
+   "test_acc": 0.885,
+   "noisy_test": {
+    "0.0": 0.92,
+    "0.01": 0.875,
+    "0.03": 0.87,
+    "0.05": 0.87
+   },
+   "noisy_val": {
+    "0.0": 0.8,
+    "0.01": 0.8,
+    "0.03": 0.8416666666666667,
+    "0.05": 0.825
+   },
+   "greedy_trace": [
+    0.8055555555555556,
+    0.8319444444444444,
+    0.836111111111111,
+    0.8486111111111112,
+    0.8430555555555554,
+    0.8375,
+    0.8277777777777778
+   ],
+   "readout": {
+    "0.02": {
+     "raw": {
+      "0.0": 0.905,
+      "0.01": 0.88,
+      "0.03": 0.87,
+      "0.05": 0.86
+     },
+     "mitigated": {
+      "0.0": 0.9,
+      "0.01": 0.88,
+      "0.03": 0.87,
+      "0.05": 0.88
+     }
+    }
+   }
+  },
+  "greedy_clean": {
+   "members": [
+    0,
+    6,
+    1,
+    5,
+    4,
+    2,
+    3
+   ],
+   "val_acc": 0.8333333333333334,
+   "test_acc": 0.885,
+   "noisy_test": {
+    "0.0": 0.92,
+    "0.01": 0.875,
+    "0.03": 0.87,
+    "0.05": 0.87
+   },
+   "noisy_val": {
+    "0.0": 0.8,
+    "0.01": 0.8,
+    "0.03": 0.8416666666666667,
+    "0.05": 0.825
+   },
+   "greedy_trace": [
+    0.825,
+    0.875,
+    0.8666666666666667,
+    0.875,
+    0.875,
+    0.8583333333333333,
+    0.8333333333333334
+   ]
+  },
+  "topk": {
+   "members": [
+    0,
+    6,
+    5,
+    1,
+    4,
+    3,
+    2
+   ],
+   "val_acc": 0.8333333333333334,
+   "test_acc": 0.885,
+   "noisy_test": {
+    "0.0": 0.92,
+    "0.01": 0.875,
+    "0.03": 0.87,
+    "0.05": 0.87
+   },
+   "noisy_val": {
+    "0.0": 0.8,
+    "0.01": 0.8,
+    "0.03": 0.8416666666666667,
+    "0.05": 0.825
+   },
+   "greedy_trace": null
+  },
+  "best_single": {
+   "members": [
+    0
+   ],
+   "val_acc": 0.825,
+   "test_acc": 0.84,
+   "noisy_test": {
+    "0.0": 0.84,
+    "0.01": 0.785,
+    "0.03": 0.82,
+    "0.05": 0.76
+   },
+   "noisy_val": {
+    "0.0": 0.775,
+    "0.01": 0.8,
+    "0.03": 0.775,
+    "0.05": 0.7833333333333333
+   },
+   "greedy_trace": null
+  }
+ },
+ "baselines": {},
+ "cache": {
+  "hits": 884,
+  "misses": 641,
+  "hit_rate": 0.579672131147541
+ },
+ "timings": {
+  "data_s": 0.23250464598822873,
+  "phase1_s": 205.36014611899736,
+  "reeval_s": 37.2226594179956,
+  "phase2_s": 113.50624951100326,
+  "ensemble_s": 0.14390034499228932,
+  "readout_s": 72.87977856399084,
+  "total_s": 429.34646230199724
+ },
+ "environment": {
+  "python": "3.12.7",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "scikit-learn": "1.4.2",
+  "mogapvqnn": "1.0.0",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "node": "machine-1",
+  "pennylane": "0.38.0"
+ },
+ "variant": "no_proxy"
+}

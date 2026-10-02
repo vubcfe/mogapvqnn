@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{Readout-error study of the selected MO-GA-PVQNN ensemble (test accuracy \%, mean $\pm$ std). RO: symmetric readout bit-flip probability 0.02; mit.: robust-shadow correction, i.e. the same measurement record with every snapshot factor divided by $1-2q$. All columns use the same ensemble and test samples.}\label{tab:readout}
+\footnotesize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Configuration & clean & RO 0.02 & RO mit. & $\epsilon=0.01$ & $\epsilon$ + RO & $\epsilon$ + RO mit. \\
+\midrule
+Fashion-MNIST 4q & $73.9\pm3.1$ & $74.8\pm3.0$ & $74.3\pm2.9$ & $73.7\pm3.7$ & $74.9\pm3.8$ & $74.5\pm3.5$ \\
+Fashion-MNIST 6q & $90.3\pm2.5$ & $91.0\pm2.0$ & $91.0\pm2.4$ & $90.4\pm2.3$ & $91.3\pm2.1$ & $91.2\pm2.3$ \\
+Fashion-MNIST 8q & $88.7\pm2.4$ & $86.9\pm2.6$ & $86.7\pm2.8$ & $87.9\pm2.8$ & $88.3\pm3.0$ & $88.4\pm3.0$ \\
+MNIST 4q & $83.0\pm3.1$ & $82.2\pm2.4$ & $82.5\pm2.8$ & $82.5\pm2.4$ & $81.5\pm2.9$ & $82.2\pm2.8$ \\
+MNIST 6q & $84.9\pm5.1$ & $85.4\pm4.1$ & $84.7\pm3.6$ & $84.5\pm3.3$ & $85.0\pm2.8$ & $84.8\pm2.4$ \\
+EuroSAT 4q & $77.6\pm3.5$ & $55.3\pm2.1$ & $76.6\pm4.1$ & $66.3\pm6.3$ & $50.3\pm0.8$ & $63.1\pm5.8$ \\
+EuroSAT 6q & $77.0\pm4.6$ & $52.1\pm1.6$ & $75.9\pm3.6$ & $71.2\pm4.1$ & $50.3\pm0.6$ & $71.4\pm4.9$ \\
+\botrule
+\end{tabular}
+\end{table*}

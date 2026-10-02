@@ -1,0 +1,60 @@
+# Full experimental protocol of the QIP manuscript (7 configurations).
+# Run:  mogapvqnn suite configs/paper.yaml --jobs 6
+seeds: [0, 1, 2]
+
+defaults:
+  workers: 4                 # threads per run (Phase 1 population evaluation)
+  val_fraction: 0.2
+  resize: nearest
+  search:
+    n_genes: 8
+    tournament_k: 3
+    crossover_rate: 1.0
+    angle_sigma: 0.3
+    epsilon_dominance: 0.005
+    proxy_lambda: 0.05
+    early_stop_patience: 5
+  shadows:
+    estimator: shadow
+    observables: local2
+    base_shots: 200
+    max_shots: 1000
+  phase2:
+    noise_levels: [0.01, 0.03, 0.05]
+    noise_model: local
+    readout_levels: [0.02]   # post-hoc readout study of the selected ensemble (raw + mitigated)
+  ensemble:
+    size: 8
+    robust_weight: 0.5
+
+# Table 1 of the manuscript
+by_qubits:
+  4: {search: {population: 20, generations: 30, mutation_rate: 0.20}}
+  6: {search: {population: 20, generations: 30, mutation_rate: 0.20}}
+  8: {search: {population: 15, generations: 25, mutation_rate: 0.15}}
+
+# Section 4.1. Fashion-MNIST label 0 = T-shirt/top, 4 = Coat (3 = Dress).
+# Labels 0 vs 4 match the original experiments and the ICMCSI-2026 conference
+# version of this work; the manuscript's class *name* "Dress" is the error.
+configurations:
+  - {dataset: fashion_mnist, classes: [0, 4], n_qubits: 4, n_train: 800, n_test: 200}
+  - {dataset: fashion_mnist, classes: [0, 4], n_qubits: 6, n_train: 600, n_test: 200}
+  - {dataset: fashion_mnist, classes: [0, 4], n_qubits: 8, n_train: 400, n_test: 150}
+  - {dataset: mnist, classes: [3, 8], n_qubits: 4, n_train: 800, n_test: 200}
+  - {dataset: mnist, classes: [3, 8], n_qubits: 6, n_train: 600, n_test: 200}
+  - {dataset: eurosat, classes: [AnnualCrop, Forest], n_qubits: 4, n_train: 800, n_test: 200}
+  - {dataset: eurosat, classes: [AnnualCrop, Forest], n_qubits: 6, n_train: 600, n_test: 200}
+
+# Variants run in addition to the full model. Baselines are only run for
+# "full". Each variant applies the listed config overrides.
+variants:
+  full: {}
+  no_proxy:                  # ablation: 3-objective NSGA-II (paper Sec. 4.6)
+    search: {use_proxy: false}
+  exact_features:            # ablation: exact expectations instead of shadows
+    shadows: {estimator: exact}
+  measured_noise:            # noise-aware search: the 4th objective 1 - S_hat is *replaced*
+    search: {robust_objective: measured, loop_noise: 0.01}   # by 1 - noisy val. acc. (still 4 obj.)
+# Readout noise is not a separate variant: every `full` run re-evaluates its
+# selected ensemble with phase2.readout_levels (raw and robust-shadow
+# mitigated) on the same circuits, so no search is repeated.

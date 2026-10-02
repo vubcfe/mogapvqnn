@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{Ensemble-selection ablation: test accuracy (\%) of different ways of building the final classifier from the same Pareto front.}\label{tab:ensemble}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Configuration & Greedy (clean+robust) & Greedy (clean) & Top-$K$ & Best single \\
+\midrule
+Fashion-MNIST 4q & $74.8\pm3.8$ & $74.6\pm3.4$ & $75.0\pm3.7$ & $76.1\pm2.3$ \\
+Fashion-MNIST 6q & $90.8\pm2.6$ & $90.8\pm2.5$ & $90.8\pm2.6$ & $88.9\pm2.7$ \\
+Fashion-MNIST 8q & $87.8\pm3.5$ & $87.8\pm3.5$ & $87.8\pm3.5$ & $85.4\pm2.9$ \\
+MNIST 4q & $82.5\pm3.0$ & $82.5\pm3.0$ & $82.5\pm3.0$ & $82.1\pm2.4$ \\
+MNIST 6q & $85.0\pm3.2$ & $85.0\pm3.2$ & $85.0\pm3.2$ & $82.7\pm2.9$ \\
+EuroSAT 4q & $77.0\pm4.0$ & $77.0\pm4.0$ & $77.0\pm4.0$ & $71.0\pm3.4$ \\
+EuroSAT 6q & $78.5\pm3.0$ & $78.5\pm3.0$ & $78.5\pm3.0$ & $71.2\pm3.2$ \\
+\botrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{Wall-clock time per run in minutes (mean $\pm$ std; x86\_64, 4 worker threads). Cache: feature-cache hit rate.}\label{tab:runtime}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Configuration & Phase~1 & Phase~2 & Baselines & Total & Cache \\
+\midrule
+Fashion-MNIST 4q & $2.2\pm0.6$ & $0.4\pm0.2$ & $7.5\pm0.7$ & $10.6\pm1.3$ & 37\% \\
+Fashion-MNIST 6q & $8.0\pm2.3$ & $1.7\pm1.8$ & $31.2\pm5.4$ & $42.3\pm9.3$ & 36\% \\
+Fashion-MNIST 8q & $11.7\pm5.0$ & $2.7\pm1.2$ & $73.0\pm11.8$ & $90.0\pm17.2$ & 35\% \\
+MNIST 4q & $1.7\pm0.6$ & $0.2\pm0.1$ & $6.9\pm0.9$ & $9.1\pm1.5$ & 32\% \\
+MNIST 6q & $5.7\pm1.9$ & $1.4\pm0.9$ & $28.2\pm4.3$ & $36.6\pm6.1$ & 35\% \\
+EuroSAT 4q & $1.8\pm0.4$ & $0.3\pm0.1$ & $7.2\pm1.1$ & $9.5\pm1.5$ & 30\% \\
+EuroSAT 6q & $4.9\pm3.1$ & $1.0\pm0.4$ & $24.7\pm5.5$ & $31.6\pm8.6$ & 35\% \\
+\botrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{Readout-error sweep on the selected ensembles (no gate noise; test accuracy \%, mean $\pm$ std over seeds; $n$: seeds). raw: unmitigated; mit.: robust-shadow correction of the same measurement record.}\label{tab:readout-sweep}
+\footnotesize\setlength\tabcolsep{3pt}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+Configuration & $n$ & clean & $q=0.01$ raw & $q=0.01$ mit. & $q=0.02$ raw & $q=0.02$ mit. & $q=0.05$ raw & $q=0.05$ mit. \\
+\midrule
+Fashion-MNIST 4q & 10 & $73.9\pm3.1$ & $73.7\pm4.3$ & $73.8\pm4.1$ & $74.8\pm3.0$ & $74.3\pm2.9$ & $74.2\pm2.9$ & $73.4\pm3.0$ \\
+Fashion-MNIST 6q & 10 & $90.3\pm2.5$ & $90.8\pm1.9$ & $90.8\pm1.8$ & $91.0\pm2.0$ & $91.0\pm2.4$ & $90.3\pm2.7$ & $90.8\pm2.5$ \\
+Fashion-MNIST 8q & 10 & $88.7\pm2.4$ & $87.7\pm3.9$ & $87.6\pm3.6$ & $86.9\pm2.6$ & $86.7\pm2.8$ & $86.0\pm3.3$ & $86.7\pm3.1$ \\
+MNIST 4q & 10 & $83.0\pm3.1$ & $82.5\pm2.4$ & $82.7\pm2.6$ & $82.2\pm2.4$ & $82.5\pm2.8$ & $81.5\pm2.7$ & $82.6\pm2.8$ \\
+MNIST 6q & 10 & $84.9\pm5.1$ & $84.9\pm3.3$ & $85.0\pm3.5$ & $85.4\pm4.1$ & $84.7\pm3.6$ & $83.1\pm4.0$ & $83.7\pm3.6$ \\
+EuroSAT 4q & 10 & $77.6\pm3.5$ & $68.1\pm3.7$ & $77.2\pm3.0$ & $55.3\pm2.1$ & $76.6\pm4.1$ & $50.0\pm0.0$ & $75.4\pm3.7$ \\
+EuroSAT 6q & 10 & $77.0\pm4.6$ & $66.6\pm3.2$ & $78.5\pm2.7$ & $52.1\pm1.6$ & $75.9\pm3.6$ & $50.0\pm0.0$ & $76.8\pm4.6$ \\
+\botrule
+\end{tabular}
+\end{table*}
