@@ -1,5 +1,7 @@
 # MO-GA-PVQNN
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23104673.svg)](https://doi.org/10.5281/zenodo.23104673)
+
 Multi-objective genetic architecture search and benchmarks for
 **post-variational quantum neural networks** (PVQNN) using classical shadows.
 This is the code, data and analysis for the article
@@ -265,4 +267,6 @@ The tests cover:
 ## License and citation
 
 Released under the [MIT License](LICENSE). Citation metadata is in
-[CITATION.cff](CITATION.cff); please cite the article above.
+[CITATION.cff](CITATION.cff); please cite the article above. The archived
+software is on Zenodo: version 1.0.0, doi:10.5281/zenodo.23104674 (all
+versions: doi:10.5281/zenodo.23104673).

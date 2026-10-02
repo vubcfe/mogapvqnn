@@ -2,7 +2,16 @@ cff-version: 1.2.0
 message: "If you use this software or its results, please cite the article below."
 title: "mogapvqnn: noise-aware architecture search and benchmarks for post-variational quantum neural networks"
 version: 1.0.0
+doi: 10.5281/zenodo.23104674
 license: MIT
+repository-code: "https://github.com/vubcfe/mogapvqnn"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23104673
+    description: "Concept DOI (all versions)"
+  - type: doi
+    value: 10.5281/zenodo.23104674
+    description: "Version 1.0.0"
 authors:
   - family-names: Bui
     given-names: Cao Vu
