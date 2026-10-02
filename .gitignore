@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+# datasets are downloaded / cached locally
+data/
+# machine-specific execution logs and scheduling files
+results/logs/
+results/logs_remote/
+results/*.log
+results/jobs_*.txt
+results/FINISHED.txt
+results/smoke/
+results/logs_*/

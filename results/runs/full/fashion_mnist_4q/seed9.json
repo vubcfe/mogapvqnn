@@ -1,0 +1,3416 @@
+{
+ "name": "fashion_mnist_4q",
+ "config": {
+  "dataset": "fashion_mnist",
+  "classes": [
+   0,
+   4
+  ],
+  "n_qubits": 4,
+  "n_train": 800,
+  "n_test": 200,
+  "val_fraction": 0.2,
+  "resize": "nearest",
+  "seed": 9,
+  "workers": 4,
+  "search": {
+   "population": 20,
+   "generations": 30,
+   "mutation_rate": 0.2,
+   "angle_sigma": 0.3,
+   "crossover_rate": 1.0,
+   "tournament_k": 3,
+   "n_genes": 8,
+   "allow_identity": true,
+   "epsilon_dominance": 0.005,
+   "proxy_lambda": 0.05,
+   "use_proxy": true,
+   "robust_objective": "proxy",
+   "loop_noise": 0.01,
+   "early_stop_patience": 5,
+   "early_stop_tol": 0.0001,
+   "hv_reference": 1.1
+  },
+  "shadows": {
+   "estimator": "shadow",
+   "observables": "local2",
+   "base_shots": 200,
+   "max_shots": 1000
+  },
+  "classifier": {
+   "C": 1.0,
+   "max_iter": 20000
+  },
+  "phase2": {
+   "noise_levels": [
+    0.01,
+    0.03,
+    0.05
+   ],
+   "noise_model": "local",
+   "max_circuits": 0,
+   "val_samples": 0,
+   "test_samples": 0,
+   "readout_error": 0.0,
+   "readout_mitigation": false,
+   "readout_levels": [
+    0.02
+   ]
+  },
+  "ensemble": {
+   "size": 8,
+   "robust_weight": 0.5
+  },
+  "baselines": {
+   "enabled": [
+    "random",
+    "random_search",
+    "manual",
+    "hea",
+    "pvqnn",
+    "grid",
+    "linear",
+    "poly2"
+   ],
+   "random_search_budget": 0,
+   "manual_layers": 1,
+   "hea_layers": 1,
+   "grid_depths": [
+    2,
+    4,
+    6,
+    8
+   ],
+   "grid_cnot_ratios": [
+    0.0,
+    0.25,
+    0.5
+   ]
+  }
+ },
+ "task": {
+  "classes": [
+   "0",
+   "4"
+  ],
+  "class_names": [
+   "T-shirt/top",
+   "Coat"
+  ],
+  "image_side": 4,
+  "resize": "nearest",
+  "n_fit": 640,
+  "n_val": 160,
+  "n_test": 200
+ },
+ "phase2_samples": {
+  "val": 160,
+  "test": 200
+ },
+ "observables": [
+  "X0",
+  "Y0",
+  "Z0",
+  "X1",
+  "Y1",
+  "Z1",
+  "X2",
+  "Y2",
+  "Z2",
+  "X3",
+  "Y3",
+  "Z3",
+  "X0X1",
+  "Z0Z1",
+  "X1X2",
+  "Z1Z2",
+  "X2X3",
+  "Z2Z3"
+ ],
+ "phase1": {
+  "history": [
+   {
+    "generation": 0,
+    "hv": 0.4058842185425021,
+    "front_size": 3,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.6446875,
+    "unique_evaluations": 20,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 5.257748019997962
+   },
+   {
+    "generation": 1,
+    "hv": 0.4857667786223931,
+    "front_size": 4,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.6643749999999999,
+    "unique_evaluations": 40,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 11.021014522004407
+   },
+   {
+    "generation": 2,
+    "hv": 0.4897053688371452,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.6671874999999999,
+    "unique_evaluations": 60,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 16.40628124200157
+   },
+   {
+    "generation": 3,
+    "hv": 0.5309684955869642,
+    "front_size": 6,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.684375,
+    "unique_evaluations": 80,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 21.710087996005313
+   },
+   {
+    "generation": 4,
+    "hv": 0.5311008999489633,
+    "front_size": 7,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.700625,
+    "unique_evaluations": 100,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 28.28406722699583
+   },
+   {
+    "generation": 5,
+    "hv": 0.5311008999489633,
+    "front_size": 7,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7021875,
+    "unique_evaluations": 120,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 32.66977226700692
+   },
+   {
+    "generation": 6,
+    "hv": 0.5311008999489633,
+    "front_size": 7,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.711875,
+    "unique_evaluations": 140,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 37.9087561990018
+   },
+   {
+    "generation": 7,
+    "hv": 0.5313258609690895,
+    "front_size": 7,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7103125,
+    "unique_evaluations": 160,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 43.076255677005975
+   },
+   {
+    "generation": 8,
+    "hv": 0.5318779221518758,
+    "front_size": 6,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7203125,
+    "unique_evaluations": 180,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 49.29536131900386
+   },
+   {
+    "generation": 9,
+    "hv": 0.5318779221518758,
+    "front_size": 6,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7203125,
+    "unique_evaluations": 200,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 54.96587011500378
+   },
+   {
+    "generation": 10,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7178125,
+    "unique_evaluations": 220,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 61.627543716997025
+   },
+   {
+    "generation": 11,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.718125,
+    "unique_evaluations": 240,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 67.96419441599573
+   },
+   {
+    "generation": 12,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7134375000000001,
+    "unique_evaluations": 260,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 73.69107629700738
+   },
+   {
+    "generation": 13,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7134375000000001,
+    "unique_evaluations": 280,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 79.31549814199388
+   },
+   {
+    "generation": 14,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.7140625,
+    "unique_evaluations": 300,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 85.26530318899313
+   },
+   {
+    "generation": 15,
+    "hv": 0.5328526638022728,
+    "front_size": 5,
+    "best_val_acc": 0.7625,
+    "mean_val_acc": 0.71875,
+    "unique_evaluations": 320,
+    "cache_hit_rate": 0.0,
+    "elapsed_s": 91.36947898499784
+   }
+  ],
+  "generations_run": 15,
+  "stopped_early": true,
+  "unique_evaluations": 320
+ },
+ "pareto": {
+  "hv": 0.5328526638022728,
+  "hv_3obj": 0.589321351427498,
+  "size": 5,
+  "val_acc_spread_base_shots": 0.08749999999999991,
+  "val_acc_spread_max_shots": 0.08750000000000002
+ },
+ "front": [
+  {
+   "key": "H:3:|RZ:0:-0.230644312|RX:2:-1.117272329|RX:3:-0.154580290|CNOT:2,0:|CNOT:3,2:|RX:1:-2.553968770|CNOT:0,3:",
+   "circuit": [
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      0
+     ],
+     "angle": -0.2306443121946553
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": -1.1172723291371254
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      3
+     ],
+     "angle": -0.1545802898778561
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      2,
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      3,
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      1
+     ],
+     "angle": -2.553968770052415
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      0,
+      3
+     ],
+     "angle": null
+    }
+   ],
+   "text": "H(q3) RZ(q0, -0.231) RX(q2, -1.117) RX(q3, -0.155) CNOT(q2->q0) CNOT(q3->q2) RX(q1, -2.554) CNOT(q0->q3)",
+   "depth": 4,
+   "cnot": 3,
+   "gates": 8,
+   "proxy": 0.6065306597126334,
+   "objectives": [
+    0.23750000000000004,
+    0.5,
+    0.375,
+    0.3934693402873666
+   ],
+   "val_acc_base": 0.7625,
+   "val_acc": 0.7375,
+   "test_acc": 0.715,
+   "phase2": {
+    "val": {
+     "0.0": 0.725,
+     "0.01": 0.75,
+     "0.03": 0.71875,
+     "0.05": 0.73125
+    },
+    "test": {
+     "0.0": 0.74,
+     "0.01": 0.695,
+     "0.03": 0.685,
+     "0.05": 0.72
+    },
+    "robust_val": 0.7333333333333334,
+    "robust_test": 0.6999999999999998
+   }
+  },
+  {
+   "key": "RZ:1:-2.241072971|RZ:3:-1.955325967|H:1:|RX:2:0.744183312|I|H:3:|RX:0:-0.268722475|RZ:2:1.776358803",
+   "circuit": [
+    {
+     "gate": "RZ",
+     "wires": [
+      1
+     ],
+     "angle": -2.241072971388368
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -1.955325966912332
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 0.744183312382837
+    },
+    {
+     "gate": "I",
+     "wires": [
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "H",
+     "wires": [
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      0
+     ],
+     "angle": -0.2687224745614927
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      2
+     ],
+     "angle": 1.776358802907434
+    }
+   ],
+   "text": "RZ(q1, -2.241) RZ(q3, -1.955) H(q1) RX(q2, +0.744) H(q3) RX(q0, -0.269) RZ(q2, +1.776)",
+   "depth": 2,
+   "cnot": 0,
+   "gates": 7,
+   "proxy": 0.9048374180359595,
+   "objectives": [
+    0.32499999999999996,
+    0.25,
+    0.0,
+    0.09516258196404048
+   ],
+   "val_acc_base": 0.675,
+   "val_acc": 0.725,
+   "test_acc": 0.61,
+   "phase2": {
+    "val": {
+     "0.0": 0.6625,
+     "0.01": 0.7,
+     "0.03": 0.6625,
+     "0.05": 0.625
+    },
+    "test": {
+     "0.0": 0.64,
+     "0.01": 0.615,
+     "0.03": 0.65,
+     "0.05": 0.595
+    },
+    "robust_val": 0.6625,
+    "robust_test": 0.62
+   }
+  },
+  {
+   "key": "RZ:1:-2.241072971|RZ:3:-1.955325967|H:1:|RX:2:0.744183312|CNOT:1,0:|CNOT:0,3:|RX:1:-2.553968770|RX:0:1.533944462",
+   "circuit": [
+    {
+     "gate": "RZ",
+     "wires": [
+      1
+     ],
+     "angle": -2.241072971388368
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -1.955325966912332
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 0.744183312382837
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      1,
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      0,
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      1
+     ],
+     "angle": -2.553968770052415
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      0
+     ],
+     "angle": 1.533944462313058
+    }
+   ],
+   "text": "RZ(q1, -2.241) RZ(q3, -1.955) H(q1) RX(q2, +0.744) CNOT(q1->q0) CNOT(q0->q3) RX(q1, -2.554) RX(q0, +1.534)",
+   "depth": 5,
+   "cnot": 2,
+   "gates": 8,
+   "proxy": 0.6376281516217733,
+   "objectives": [
+    0.23750000000000004,
+    0.625,
+    0.25,
+    0.36237184837822667
+   ],
+   "val_acc_base": 0.7625,
+   "val_acc": 0.75,
+   "test_acc": 0.755,
+   "phase2": {
+    "val": {
+     "0.0": 0.7125,
+     "0.01": 0.7,
+     "0.03": 0.725,
+     "0.05": 0.725
+    },
+    "test": {
+     "0.0": 0.7,
+     "0.01": 0.68,
+     "0.03": 0.71,
+     "0.05": 0.68
+    },
+    "robust_val": 0.7166666666666667,
+    "robust_test": 0.6900000000000001
+   }
+  },
+  {
+   "key": "RZ:1:-2.241072971|RX:2:1.337860754|H:1:|RX:3:0.113819322|H:2:|RX:3:0.332404390|RX:3:-1.158595730|RZ:2:0.814088176",
+   "circuit": [
+    {
+     "gate": "RZ",
+     "wires": [
+      1
+     ],
+     "angle": -2.241072971388368
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 1.3378607539870604
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      3
+     ],
+     "angle": 0.11381932194380129
+    },
+    {
+     "gate": "H",
+     "wires": [
+      2
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      3
+     ],
+     "angle": 0.33240439000480393
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      3
+     ],
+     "angle": -1.1585957304287784
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      2
+     ],
+     "angle": 0.8140881756998724
+    }
+   ],
+   "text": "RZ(q1, -2.241) RX(q2, +1.338) H(q1) RX(q3, +0.114) H(q2) RX(q3, +0.332) RX(q3, -1.159) RZ(q2, +0.814)",
+   "depth": 3,
+   "cnot": 0,
+   "gates": 8,
+   "proxy": 0.8607079764250578,
+   "objectives": [
+    0.31875,
+    0.375,
+    0.0,
+    0.1392920235749422
+   ],
+   "val_acc_base": 0.68125,
+   "val_acc": 0.6625,
+   "test_acc": 0.63,
+   "phase2": {
+    "val": {
+     "0.0": 0.6875,
+     "0.01": 0.59375,
+     "0.03": 0.69375,
+     "0.05": 0.60625
+    },
+    "test": {
+     "0.0": 0.595,
+     "0.01": 0.64,
+     "0.03": 0.61,
+     "0.05": 0.61
+    },
+    "robust_val": 0.63125,
+    "robust_test": 0.62
+   }
+  },
+  {
+   "key": "I|RZ:3:-1.955325967|H:1:|RX:2:0.744183312|RX:2:1.150331445|CNOT:0,3:|I|RZ:2:1.776358803",
+   "circuit": [
+    {
+     "gate": "I",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      3
+     ],
+     "angle": -1.955325966912332
+    },
+    {
+     "gate": "H",
+     "wires": [
+      1
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 0.744183312382837
+    },
+    {
+     "gate": "RX",
+     "wires": [
+      2
+     ],
+     "angle": 1.1503314449044977
+    },
+    {
+     "gate": "CNOT",
+     "wires": [
+      0,
+      3
+     ],
+     "angle": null
+    },
+    {
+     "gate": "I",
+     "wires": [
+      0
+     ],
+     "angle": null
+    },
+    {
+     "gate": "RZ",
+     "wires": [
+      2
+     ],
+     "angle": 1.776358802907434
+    }
+   ],
+   "text": "RZ(q3, -1.955) H(q1) RX(q2, +0.744) RX(q2, +1.150) CNOT(q0->q3) RZ(q2, +1.776)",
+   "depth": 3,
+   "cnot": 1,
+   "gates": 6,
+   "proxy": 0.7788007830714049,
+   "objectives": [
+    0.25,
+    0.375,
+    0.125,
+    0.22119921692859512
+   ],
+   "val_acc_base": 0.75,
+   "val_acc": 0.74375,
+   "test_acc": 0.71,
+   "phase2": {
+    "val": {
+     "0.0": 0.73125,
+     "0.01": 0.75625,
+     "0.03": 0.73125,
+     "0.05": 0.7125
+    },
+    "test": {
+     "0.0": 0.7,
+     "0.01": 0.725,
+     "0.03": 0.7,
+     "0.05": 0.67
+    },
+    "robust_val": 0.7333333333333333,
+    "robust_test": 0.6983333333333333
+   }
+  }
+ ],
+ "ensembles": {
+  "greedy": {
+   "members": [
+    4,
+    2,
+    1,
+    0,
+    3
+   ],
+   "val_acc": 0.75,
+   "test_acc": 0.705,
+   "noisy_test": {
+    "0.0": 0.715,
+    "0.01": 0.7,
+    "0.03": 0.685,
+    "0.05": 0.665
+   },
+   "noisy_val": {
+    "0.0": 0.74375,
+    "0.01": 0.7125,
+    "0.03": 0.75625,
+    "0.05": 0.7125
+   },
+   "greedy_trace": [
+    0.7385416666666667,
+    0.78125,
+    0.7520833333333333,
+    0.7572916666666666,
+    0.7385416666666667
+   ],
+   "readout": {
+    "0.02": {
+     "raw": {
+      "0.0": 0.72,
+      "0.01": 0.665,
+      "0.03": 0.71,
+      "0.05": 0.64
+     },
+     "mitigated": {
+      "0.0": 0.73,
+      "0.01": 0.665,
+      "0.03": 0.705,
+      "0.05": 0.65
+     }
+    }
+   }
+  },
+  "greedy_clean": {
+   "members": [
+    2,
+    4,
+    1,
+    3,
+    0
+   ],
+   "val_acc": 0.75,
+   "test_acc": 0.705,
+   "noisy_test": {
+    "0.0": 0.715,
+    "0.01": 0.7,
+    "0.03": 0.685,
+    "0.05": 0.665
+   },
+   "noisy_val": {
+    "0.0": 0.74375,
+    "0.01": 0.7125,
+    "0.03": 0.75625,
+    "0.05": 0.7125
+   },
+   "greedy_trace": [
+    0.75,
+    0.8125,
+    0.76875,
+    0.7625,
+    0.75
+   ]
+  },
+  "topk": {
+   "members": [
+    2,
+    4,
+    0,
+    1,
+    3
+   ],
+   "val_acc": 0.75,
+   "test_acc": 0.705,
+   "noisy_test": {
+    "0.0": 0.715,
+    "0.01": 0.7,
+    "0.03": 0.685,
+    "0.05": 0.665
+   },
+   "noisy_val": {
+    "0.0": 0.74375,
+    "0.01": 0.7125,
+    "0.03": 0.75625,
+    "0.05": 0.7125
+   },
+   "greedy_trace": null
+  },
+  "best_single": {
+   "members": [
+    2
+   ],
+   "val_acc": 0.75,
+   "test_acc": 0.755,
+   "noisy_test": {
+    "0.0": 0.7,
+    "0.01": 0.68,
+    "0.03": 0.71,
+    "0.05": 0.68
+   },
+   "noisy_val": {
+    "0.0": 0.7125,
+    "0.01": 0.7,
+    "0.03": 0.725,
+    "0.05": 0.725
+   },
+   "greedy_trace": null
+  }
+ },
+ "baselines": {
+  "random": {
+   "val_acc": 0.6875,
+   "test_acc": 0.69,
+   "circuits": [
+    [
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": 0.5001893388022811
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": -2.0786710950459844
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -1.2651266224156044
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": -2.8908000038500785
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 0.6424285384029202
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       0
+      ],
+      "angle": -1.802591619236104
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 2.969506963355532
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": 2.2880331209610896
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 0.29957492048211654
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 2.4429990068251968
+     },
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 1.69751379348817
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -1.844837333823801
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": 2.946815553021489
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 1.0740154765855188
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": 1.4091102498167363
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 2.3197069639748467
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": -2.911841661033294
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -0.8861075875629001
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 1.9551289407830676
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": -0.875015191742385
+     }
+    ],
+    [
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 0.5713375945733832
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": -2.5323127421410168
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 0.9447566533014147
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 1.0272264077532238
+     }
+    ],
+    [
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -0.26586612712815416
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -1.7334371235920483
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": 1.3632566008892555
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -3.116336583635638
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       0
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": 0.15592607621658372
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -1.9353336381366162
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": -3.0710900427160706
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -0.08919685877075434
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.67,
+    "0.01": 0.655,
+    "0.03": 0.66,
+    "0.05": 0.69
+   },
+   "seconds": 37.035126918010064
+  },
+  "random_search": {
+   "val_acc": 0.7,
+   "test_acc": 0.65,
+   "circuits": [
+    [
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -0.6070691585362784
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       0
+      ],
+      "angle": 2.9883138811177004
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -3.1059221322917243
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 1.2724655129771971
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": 2.367955377723539
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -3.103422494185595
+     }
+    ],
+    [
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 1.901117010644934
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 1.5714457352759466
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 1.7038682059276473
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -2.948589329008478
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": -2.743745683702773
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -1.8401700171354347
+     }
+    ],
+    [
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 0.9234558384015141
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 1.9015957464757554
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 0.5349307122306506
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       0
+      ],
+      "angle": -1.3619538146786163
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -0.6455045895447662
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -3.0016780204115268
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       0
+      ],
+      "angle": -1.975426923170238
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -0.9449044278815095
+     }
+    ],
+    [
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -2.734060085080055
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       0
+      ],
+      "angle": 2.2770451567388905
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 2.4790912847469126
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -2.578160442482058
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": 2.564935540551491
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.655,
+    "0.01": 0.675,
+    "0.03": 0.685,
+    "0.05": 0.645
+   },
+   "budget": 320,
+   "front_size": 4,
+   "seconds": 115.45612408299348
+  },
+  "manual": {
+   "val_acc": 0.725,
+   "test_acc": 0.67,
+   "circuits": [
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": 0.2627101654476518
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 1.5740100434239617
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -0.9570133496310547
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.3875120628800506
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.0349955292057893
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -2.1389432913763695
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 0.08477467832495389
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -1.366384059398113
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -1.0606680611284016
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 0.03333035224071779
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -1.7366604536394596
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 0.3413360094856368
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.9478358329452177
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -2.8786175997693975
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 1.909366766772564
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -0.7603226320214702
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -2.086946753065374
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 1.9673202273895791
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -2.979838628159419
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.000595937408325
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -1.2435606359285403
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 2.7800600829136908
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 1.466109400451658
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.762358843868902
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": 0.11150748446572667
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 0.6226641697977024
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -2.3398487261223573
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.1329632748694545
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -1.9670349134233442
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -0.8068655182685776
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -1.9652856466362725
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 2.200447774827407
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.645,
+    "0.01": 0.675,
+    "0.03": 0.695,
+    "0.05": 0.63
+   },
+   "seconds": 32.563740097000846
+  },
+  "hea": {
+   "val_acc": 0.7,
+   "test_acc": 0.675,
+   "circuits": [
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.4558800470719828
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 1.528075266259047
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -2.9438622232095195
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.0173745385074637
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": 0.4805932935204811
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -2.164864749342801
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 3.129363005093591
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 2.898668360806038
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -2.122480375845445
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 0.5142362409533598
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 1.7882870126709838
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 3.106183497986237
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.12067163981193874
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -0.5079151544817124
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 2.961119052266679
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 0.7305371828657075
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.8185856456495548
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 0.5516099070986136
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -1.5467118552358323
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 1.352884404334504
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": 1.860366598314469
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -1.4899104757846322
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -2.1417405664958644
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -0.46905609883853794
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.8221655033016555
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -1.1275804934055969
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 0.751951686547041
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -1.9459998700497163
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -0.585760778594095
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 2.867520051825611
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 0.6127736824174477
+     },
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -2.3488339989371063
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.64,
+    "0.01": 0.67,
+    "0.03": 0.61,
+    "0.05": 0.615
+   },
+   "seconds": 32.1957025550073
+  },
+  "pvqnn": {
+   "val_acc": 0.65,
+   "test_acc": 0.655,
+   "circuits": [
+    [],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": 1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       0
+      ],
+      "angle": -1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": 1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       1
+      ],
+      "angle": -1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": 1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       2
+      ],
+      "angle": -1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": 1.5707963267948966
+     }
+    ],
+    [
+     {
+      "gate": "RY",
+      "wires": [
+       3
+      ],
+      "angle": -1.5707963267948966
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.61,
+    "0.01": 0.62,
+    "0.03": 0.625,
+    "0.05": 0.6
+   },
+   "seconds": 25.51994767600263
+  },
+  "grid": {
+   "val_acc": 0.74375,
+   "test_acc": 0.715,
+   "circuits": [
+    [
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 2.067323688475435
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": 1.4325266605653244
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -1.0123107029288003
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -0.5571268699742848
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       0
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": 0.6780574792039551
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -1.3679885518040062
+     }
+    ],
+    [
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 0.269859678899977
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 2.196337126791728
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": 1.9667828171003237
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -0.9317412242336429
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       0
+      ],
+      "angle": 2.1391436319634076
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       2
+      ],
+      "angle": -3.106944103205455
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 1.7129971752693072
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 2.167423467528617
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": -1.2750712258832533
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -0.7636891819931728
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -2.836668099725932
+     }
+    ],
+    [
+     {
+      "gate": "RX",
+      "wires": [
+       3
+      ],
+      "angle": -1.46995011122807
+     },
+     {
+      "gate": "H",
+      "wires": [
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       3
+      ],
+      "angle": -1.8047536227696024
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       2,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": 2.248156498676714
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       0
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -2.5119200341033316
+     },
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       1,
+       3
+      ],
+      "angle": null
+     }
+    ],
+    [
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       1
+      ],
+      "angle": -2.3896661910528887
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       1
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RX",
+      "wires": [
+       1
+      ],
+      "angle": -2.3140755282593233
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       3,
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "H",
+      "wires": [
+       2
+      ],
+      "angle": null
+     },
+     {
+      "gate": "CNOT",
+      "wires": [
+       0,
+       3
+      ],
+      "angle": null
+     },
+     {
+      "gate": "RZ",
+      "wires": [
+       2
+      ],
+      "angle": 0.9301245575693198
+     }
+    ]
+   ],
+   "noisy_test": {
+    "0.0": 0.68,
+    "0.01": 0.705,
+    "0.03": 0.675,
+    "0.05": 0.705
+   },
+   "selected_cell": {
+    "genes": 8,
+    "cnot_ratio": 0.5
+   },
+   "grid": [
+    {
+     "genes": 2,
+     "cnot_ratio": 0.0,
+     "val_acc": 0.6625
+    },
+    {
+     "genes": 2,
+     "cnot_ratio": 0.25,
+     "val_acc": 0.66875
+    },
+    {
+     "genes": 2,
+     "cnot_ratio": 0.5,
+     "val_acc": 0.71875
+    },
+    {
+     "genes": 4,
+     "cnot_ratio": 0.0,
+     "val_acc": 0.65
+    },
+    {
+     "genes": 4,
+     "cnot_ratio": 0.25,
+     "val_acc": 0.7375
+    },
+    {
+     "genes": 4,
+     "cnot_ratio": 0.5,
+     "val_acc": 0.7
+    },
+    {
+     "genes": 6,
+     "cnot_ratio": 0.0,
+     "val_acc": 0.675
+    },
+    {
+     "genes": 6,
+     "cnot_ratio": 0.25,
+     "val_acc": 0.71875
+    },
+    {
+     "genes": 6,
+     "cnot_ratio": 0.5,
+     "val_acc": 0.7
+    },
+    {
+     "genes": 8,
+     "cnot_ratio": 0.0,
+     "val_acc": 0.6875
+    },
+    {
+     "genes": 8,
+     "cnot_ratio": 0.25,
+     "val_acc": 0.71875
+    },
+    {
+     "genes": 8,
+     "cnot_ratio": 0.5,
+     "val_acc": 0.74375
+    }
+   ],
+   "seconds": 141.63960137699905
+  },
+  "linear": {
+   "val_acc": 0.79375,
+   "test_acc": 0.755,
+   "classical": true,
+   "seconds": 0.007272749004187062
+  },
+  "poly2": {
+   "val_acc": 0.75625,
+   "test_acc": 0.73,
+   "classical": true,
+   "seconds": 0.01480371700017713
+  }
+ },
+ "cache": {
+  "hits": 1011,
+  "misses": 1878,
+  "hit_rate": 0.34994807892004154
+ },
+ "timings": {
+  "data_s": 0.22705819399561733,
+  "phase1_s": 91.3698958199966,
+  "reeval_s": 10.00240035900788,
+  "phase2_s": 25.842836944997543,
+  "ensemble_s": 0.13391166199289728,
+  "readout_s": 11.876327864010818,
+  "baselines_s": 384.44114510501095,
+  "total_s": 523.8954504970025
+ },
+ "environment": {
+  "python": "3.12.7",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "scikit-learn": "1.4.2",
+  "mogapvqnn": "1.0.0",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "node": "machine-1",
+  "pennylane": "0.38.0"
+ },
+ "variant": "full"
+}

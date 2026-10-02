@@ -1,0 +1,10 @@
+# Pinned versions used for the reported experiments
+numpy==1.26.4
+scipy==1.13.1
+scikit-learn==1.4.2
+pillow
+pyyaml
+pennylane==0.38.0
+autoray==0.6.12  # PennyLane 0.38 is incompatible with autoray>=0.7
+pytest
+matplotlib

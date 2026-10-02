@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mogapvqnn"
+version = "1.0.0"
+description = "Multi-objective genetic architecture search for post-variational quantum neural networks with classical shadows"
+authors = [{ name = "Cao Vu Bui", email = "vubc@fe.edu.vn" }]
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26,<2.1",
+  "scipy>=1.11",
+  "scikit-learn>=1.4",
+  "pillow>=10",
+  "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+pennylane = ["pennylane==0.38.0", "autoray==0.6.12"]
+dev = ["pytest>=7", "matplotlib>=3.8"]
+
+[project.scripts]
+mogapvqnn = "mogapvqnn.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{Shot-noise study: the selected MO-GA-PVQNN circuits with read-outs refitted on classical-shadow features with $T$ rounds, or on exact expectation values (test accuracy \%, mean $\pm$ std). $\Delta$: exact minus $T=200$ (pp), paired $t$-test.}\label{tab:shots}
+\footnotesize
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+Configuration & $n$ & $T=200$ & $T=1000$ & $T=5000$ & exact & $\Delta$ & $p$ \\
+\midrule
+Fashion-MNIST 4q & 10 & $71.9\pm3.2$ & $74.8\pm3.8$ & $74.6\pm2.8$ & $75.4\pm3.5$ & $+3.5$ & 0.001 \\
+Fashion-MNIST 6q & 10 & $87.4\pm3.3$ & $90.8\pm2.6$ & $91.5\pm1.8$ & $91.9\pm1.9$ & $+4.4$ & 0.000 \\
+Fashion-MNIST 8q & 10 & $82.2\pm3.1$ & $87.8\pm3.5$ & $89.4\pm2.8$ & $91.0\pm1.8$ & $+8.8$ & 0.000 \\
+MNIST 4q & 10 & $81.2\pm3.6$ & $82.5\pm3.0$ & $83.7\pm2.4$ & $83.9\pm2.0$ & $+2.7$ & 0.012 \\
+MNIST 6q & 10 & $79.0\pm3.2$ & $85.0\pm3.2$ & $86.5\pm2.0$ & $87.9\pm2.4$ & $+8.8$ & 0.000 \\
+EuroSAT 4q & 10 & $66.5\pm4.9$ & $77.0\pm4.0$ & $83.2\pm2.7$ & $88.0\pm1.7$ & $+21.5$ & 0.000 \\
+EuroSAT 6q & 10 & $66.8\pm4.8$ & $78.5\pm3.0$ & $84.7\pm2.2$ & $91.9\pm2.8$ & $+25.1$ & 0.000 \\
+\botrule
+\end{tabular}
+\end{table*}

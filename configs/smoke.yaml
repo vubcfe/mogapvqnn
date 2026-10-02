@@ -1,0 +1,19 @@
+# Tiny configuration to check the whole pipeline end to end in ~1 minute.
+#   mogapvqnn suite configs/smoke.yaml --jobs 2 --results results/smoke
+#   mogapvqnn aggregate --results results/smoke/runs --out results/smoke/tables
+seeds: [0, 1]
+
+defaults:
+  workers: 2
+  search: {population: 8, generations: 4, n_genes: 6}
+  shadows: {base_shots: 50, max_shots: 100}
+  phase2: {noise_levels: [0.01, 0.05], val_samples: 40, test_samples: 40, readout_levels: [0.02]}
+  baselines: {grid_depths: [2, 4], grid_cnot_ratios: [0.0, 0.5]}
+
+configurations:
+  - {dataset: fashion_mnist, classes: [0, 4], n_qubits: 4, n_train: 200, n_test: 80}
+  - {dataset: mnist, classes: [3, 8], n_qubits: 4, n_train: 200, n_test: 80}
+
+variants:
+  full: {}
+  no_proxy: {search: {use_proxy: false}}

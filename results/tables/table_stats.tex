@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\caption{Paired $t$-tests of MO-GA-PVQNN against the best quantum baseline and the best classical reference of each configuration (matched seeds). CI: 95\% half-width of the MO-GA-PVQNN mean; $\Delta$: mean paired difference with 95\% CI (pp); $p_\mathrm{H}$: Holm-adjusted over the configurations ($p_\mathrm{H}<0.05$ in bold).}\label{tab:stats}
+\scriptsize\setlength\tabcolsep{3pt}
+\begin{tabular}{@{}lcccccccccc@{}}
+\toprule
+ & & & \multicolumn{4}{c}{vs.\ best quantum baseline} & \multicolumn{4}{c}{vs.\ best classical} \\
+Configuration & MO-GA & 95\% CI & Baseline & $\Delta$ & $p$ & $p_\mathrm{H}$ & Classical & $\Delta$ & $p$ & $p_\mathrm{H}$ \\
+\midrule
+Fashion-MNIST 4q & 74.80 & $\pm2.68$ & Manual (74.2) & $+0.55\pm2.11$ & 0.570 & 0.623 & Linear SVM (77.5) & $-2.75\pm2.62$ & 0.042 & $\mathbf{0.042}$ \\
+Fashion-MNIST 6q & 90.80 & $\pm1.83$ & Manual (91.6) & $-0.80\pm1.69$ & 0.312 & 0.623 & Poly-2 SVM (96.4) & $-5.55\pm2.15$ & 0.000 & $\mathbf{0.001}$ \\
+Fashion-MNIST 8q & 87.80 & $\pm2.48$ & Manual (91.5) & $-3.67\pm2.14$ & 0.004 & $\mathbf{0.026}$ & Poly-2 SVM (96.7) & $-8.93\pm2.24$ & 0.000 & $\mathbf{0.000}$ \\
+MNIST 4q & 82.45 & $\pm2.12$ & Manual (85.2) & $-2.80\pm2.14$ & 0.016 & 0.096 & Linear SVM (85.9) & $-3.50\pm1.52$ & 0.001 & $\mathbf{0.001}$ \\
+MNIST 6q & 85.05 & $\pm2.30$ & HEA (86.1) & $-1.05\pm1.59$ & 0.168 & 0.505 & Poly-2 SVM (90.3) & $-5.25\pm1.85$ & 0.000 & $\mathbf{0.000}$ \\
+EuroSAT 4q & 77.05 & $\pm2.86$ & Grid (81.2) & $-4.20\pm3.42$ & 0.022 & 0.096 & Linear SVM (87.2) & $-10.15\pm3.05$ & 0.000 & $\mathbf{0.000}$ \\
+EuroSAT 6q & 78.45 & $\pm2.16$ & Grid (82.3) & $-3.90\pm3.05$ & 0.018 & 0.096 & Linear SVM (87.4) & $-9.00\pm2.54$ & 0.000 & $\mathbf{0.000}$ \\
+\botrule
+\end{tabular}
+\end{table*}

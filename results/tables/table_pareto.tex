@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{Pareto-front quality (mean over seeds). HV: hypervolume of the final non-dominated front in normalised objective space (reference point 1.1 per objective, scaled to $[0,1]$). Spread: range of validation accuracy across the front. Gens: generations run; ES: runs stopped early.}\label{tab:pareto}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Configuration & HV & $|\mathcal{F}_0|$ & Spread & Gens & ES \\
+\midrule
+Fashion-MNIST 4q & $0.601\pm0.058$ & $6.2$ & $10.6$ pp & $23.1$ & 7/10 \\
+Fashion-MNIST 6q & $0.733\pm0.053$ & $5.1$ & $8.1$ pp & $22.6$ & 9/10 \\
+Fashion-MNIST 8q & $0.720\pm0.057$ & $3.4$ & $5.4$ pp & $17.9$ & 8/10 \\
+MNIST 4q & $0.625\pm0.052$ & $2.7$ & $2.1$ pp & $16.6$ & 10/10 \\
+MNIST 6q & $0.640\pm0.075$ & $4.2$ & $7.2$ pp & $17.1$ & 10/10 \\
+EuroSAT 4q & $0.574\pm0.060$ & $3.2$ & $5.7$ pp & $17.4$ & 10/10 \\
+EuroSAT 6q & $0.595\pm0.051$ & $3.7$ & $6.8$ pp & $15.6$ & 9/10 \\
+\botrule
+\end{tabular}
+\end{table}

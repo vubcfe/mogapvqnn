@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{Phase~2 noise robustness of the MO-GA-PVQNN ensemble under per-gate depolarizing noise (test accuracy \%, mean $\pm$ std). Clean and noisy accuracies are measured on the same $N$ test samples with the same shot budget. $\delta$: accuracy change at $\epsilon=0.01$ (pp).}\label{tab:noise}
+\scriptsize\setlength\tabcolsep{3pt}
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+Configuration & $N$ & clean & $\epsilon=0.01$ & $\epsilon=0.03$ & $\epsilon=0.05$ & $\delta$ & $\delta_\mathrm{Rand. search}$ & $\delta_\mathrm{HEA}$ & $\delta_\mathrm{Grid}$ \\
+\midrule
+Fashion-MNIST 4q & 200 & $73.9\pm3.1$ & $73.7\pm3.7$ & $73.3\pm3.3$ & $73.4\pm3.7$ & $-0.2$ & $+1.5$ & $+0.4$ & $+1.5$ \\
+Fashion-MNIST 6q & 200 & $90.3\pm2.5$ & $90.4\pm2.3$ & $89.8\pm2.7$ & $90.0\pm2.9$ & $+0.1$ & $+0.1$ & $-0.4$ & $-0.2$ \\
+Fashion-MNIST 8q & 150 & $88.7\pm2.4$ & $87.9\pm2.8$ & $87.8\pm2.6$ & $87.1\pm2.2$ & $-0.9$ & $-0.6$ & $-2.2$ & $+0.4$ \\
+MNIST 4q & 200 & $83.0\pm3.1$ & $82.5\pm2.4$ & $82.0\pm2.8$ & $81.8\pm3.3$ & $-0.5$ & $-0.3$ & $-0.7$ & $-0.8$ \\
+MNIST 6q & 200 & $84.9\pm5.1$ & $84.5\pm3.3$ & $84.7\pm2.7$ & $84.3\pm2.7$ & $-0.5$ & $+0.7$ & $-1.8$ & $-0.7$ \\
+EuroSAT 4q & 200 & $77.6\pm3.5$ & $66.3\pm6.3$ & $51.0\pm2.1$ & $50.0\pm0.2$ & $-11.3$ & $-18.3$ & $-27.1$ & $-12.4$ \\
+EuroSAT 6q & 200 & $77.0\pm4.6$ & $71.2\pm4.1$ & $52.9\pm4.6$ & $50.3\pm0.8$ & $-5.9$ & $-11.7$ & $-28.7$ & $-9.2$ \\
+\botrule
+\end{tabular}
+\end{table*}
