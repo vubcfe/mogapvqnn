@@ -29,6 +29,8 @@ This is the code, data and analysis for the article
 | `results/runs/` | all 182 run records: 4 variants × 7 configurations; 10 seeds for `full` and `measured_noise`, 3 for `no_proxy` and `exact_features` |
 | `results/posthoc/` | readout and shot sweeps on the 70 selected ensembles |
 | `results/tables/`, `results/figures/` | every table (LaTeX/Markdown) and figure of the article |
+| `scripts/` | `reproduce.sh` (whole study), `posthoc.py` (readout/shot sweeps), `make_figures.py`; `distributed/finish.sh` for a suite split across two machines |
+| `docs/` | implementation details, deviations from the earlier manuscript, literature, code review |
 | `tests/` | 56 unit, validation and theory tests |
 
 The tables and figures can be regenerated from the stored records without
@@ -69,7 +71,7 @@ readout-robust shadows) are documented in
 The original implementation used for the first manuscript draft was lost.
 This repository is a from-scratch reimplementation that follows the
 manuscript and **corrects several issues in it**. See
-[Differences from the earlier manuscript](#differences-from-the-earlier-qip-manuscript). All
+[docs/DEVIATIONS.md](docs/DEVIATIONS.md). All
 numbers in the paper must be regenerated with this code.
 
 ---
@@ -141,7 +143,7 @@ JOBS=12 SEEDS="0 1 2 3 4 5 6 7 8 9" bash scripts/reproduce.sh   # 10 seeds (reco
 `OMP_NUM_THREADS=1`. Each run uses `workers` threads (default 4) for
 population evaluation, so `--jobs × workers` should not exceed the core
 count. Runs are resumable: an existing `results/runs/<variant>/<config>/seedK.json`
-is skipped unless you pass `--force`. Per-run logs go to `results/logs/`.
+is skipped unless you pass `--force`. Per-run logs go to `results/_local/logs/` (not version-controlled).
 
 Run time has not been benchmarked for this reimplementation. The runtime
 table is produced from the measured timings stored in every run record.
@@ -162,21 +164,38 @@ table is produced from the measured timings stored in every run record.
 | `timings` | data, Phase 1, re-evaluation, Phase 2, ensembles, baselines, total (seconds) |
 | `environment` | library versions, machine |
 
-`mogapvqnn aggregate` writes the following to `results/tables/`, each as
-`.tex` and `.md`, plus a combined `SUMMARY.md`:
+`scripts/posthoc.py` writes the readout and shot sweeps of every selected
+ensemble to `results/posthoc/<config>/seed<k>.json`.
+
+`mogapvqnn aggregate` writes every table twice, as
+`results/tables/latex/<table>.tex` and `results/tables/markdown/<table>.md`, plus
+a combined `results/tables/SUMMARY.md`:
 
 | Table | Contents |
 |---|---|
 | `table_main` | test accuracy, all methods |
-| `table_stats` | paired t-test vs. best baseline, CI of the mean and of the paired difference |
-| `table_pareto` | HV, front size, spread, generations, early stops |
+| `table_stats` | paired t-tests vs. best quantum and best classical baseline, Holm-adjusted |
+| `table_shots` | same circuits refitted with T shadow rounds or exact expectations |
+| `table_readout_sweep` | readout error q, raw vs robust-shadow mitigated |
 | `table_noise` | ensemble accuracy at each ε on identical samples; δ for MO-GA, random search, HEA, Grid |
-| `table_readout` | the selected ensemble without readout error, with 2 % readout error, and with robust-shadow mitigation, at ε = 0 and at the smallest ε |
+| `table_readout` | in-run readout study at q = 0.02 and the smallest ε |
+| `table_ablation` | proxy off, measured noise, exact expectations; paired tests, HV₃, Phase-1 time |
 | `table_ensemble` | greedy vs. greedy-clean vs. top-K vs. best single circuit |
-| `table_ablation` | proxy off, and exact expectations instead of shadows; paired tests, HV₃, Phase-1 time |
+| `table_pareto` | HV, front size, spread, generations, early stops |
 | `table_runtime` | Phase 1 / Phase 2 / baselines / total, cache hit rate |
 
-It also writes `convergence_<config>.csv` and `accuracy_by_config.csv` for pgfplots.
+Figure data for pgfplots (`convergence_<config>.csv`, `accuracy_by_config.csv`)
+go to `results/tables/data/`. `scripts/make_figures.py` writes the PDF figures
+to `results/figures/`.
+
+```
+results/
+├── runs/<variant>/<config>/seed<k>.json   run records (version-controlled)
+├── posthoc/<config>/seed<k>.json          post-hoc sweeps (version-controlled)
+├── tables/{latex,markdown,data}/          generated tables and figure data
+├── figures/                               generated PDF figures
+└── _local/                                logs and scheduling files (git-ignored)
+```
 
 ## Code map
 
@@ -208,165 +227,14 @@ src/mogapvqnn/
   cli.py         command-line interface
 ```
 
-## Implementation details
+## Documentation
 
-### Chromosome
-- A chromosome has `n_genes = 8` genes.
-- A gene is `(gate, wires, angle)` with gate ∈ {RX, RZ, H, CNOT}. Rotation
-  angles are drawn from [−π, π).
-- Mutation can also produce the no-op gene `I`, so circuits can shrink below
-  8 gates. The manuscript says "up to d gates".
-- Depth uses as-soon-as-possible layer scheduling.
-- Objectives are normalised to [0, 1]: depth/8, CNOT/8, 1 − Ŝ, with
-  Ŝ = exp(−0.05·(depth + 2·CNOT)).
-
-### Operators
-- Selection is a 3-way tournament on (rank, crowding distance).
-- Crossover is single point with p_c = 1.
-- Mutation: each gene's gate type is resampled with probability p_m.
-  Otherwise, each rotation angle is perturbed by N(0, 0.3) with probability
-  p_m and wrapped to [−π, π).
-- Survivor selection is elitist (μ + λ). Duplicate circuits are removed
-  before truncation.
-
-### Dominance and hypervolume
-- ε-dominance: a dominates b if a is no worse everywhere and better by more
-  than ε = 0.005 in at least one normalised objective.
-- Hypervolume is exact (recursive slicing), with reference point 1.1 per
-  objective, normalised to [0, 1].
-- Early stopping triggers when HV does not improve by more than 1e-4 for 5
-  consecutive generations.
-
-### Features and read-out
-- Observables are X_i, Y_i, Z_i on every qubit plus nearest-neighbour
-  X_iX_{i+1} and Z_iZ_{i+1}: 3n + 2(n − 1) features (`observables: local1`
-  drops the 2-local terms).
-- Phase 1 uses T = 200 shadow rounds. The front, the baselines and Phase 2
-  use T = 1000.
-- Each circuit gets one `StandardScaler + LinearSVC(C=1)` fitted on the fit
-  split (80 % of the training sample). The validation split (20 %) drives
-  fitness and ensemble selection. The test split is used only for reporting.
-
-### Determinism
-- Every feature evaluation draws from
-  `default_rng([seed, blake2b(circuit), split, shots, ε])`.
-- Results are therefore independent of thread scheduling and caching.
-- Two runs with the same seed give identical results (tested).
-
-### Noise model (default `local`)
-- After every gate, a `DepolarizingChannel(ε)` acts on each qubit the gate
-  touches, for ε ∈ {0.01, 0.03, 0.05}. The encoded input state is prepared
-  noiselessly.
-- Sampling uses quantum trajectories (random Pauli insertions). These give
-  exactly the density-matrix measurement statistics at statevector memory
-  cost, which makes 8 qubits feasible.
-- `noise_model: global` instead applies ρ → (1 − ε)ρ + εI/2ⁿ once at the end
-  (the formula printed in the manuscript).
-- Clean and noisy accuracies are measured with the same clean-trained
-  read-out, on the same samples, with the same shot budget.
-
-### Variants (`configs/paper.yaml`)
-| Variant | What changes | Purpose |
-|---|---|---|
-| `full` | nothing (structural proxy Ŝ as 4th objective); runs all baselines | main results |
-| `no_proxy` | 3 objectives | does Ŝ help? |
-| `measured_noise` | 4th objective = 1 − validation accuracy under ε = 0.01, simulated in the loop | free proxy vs NA-QAS-style measured noise |
-| `exact_features` | exact expectations instead of shadows | cost of shot noise |
-
-Readout noise is not a separate variant. Every `full` run re-evaluates its
-selected ensemble with `phase2.readout_levels` (2 % bit-flips) at every
-gate-noise level:
-- raw, and
-- with the robust-shadow correction, which is the *same* measurement record
-  with each snapshot factor divided by 1 − 2q.
-
-This gives a paired comparison without repeating the search
-(`table_readout`).
-
-### Baselines (all K = 8, same features, read-out and T)
-| Baseline | Circuits |
+| File | Contents |
 |---|---|
-| Random | K random chromosomes (no search) |
-| Random search | as many unique random chromosomes as the GA evaluated in the same run, then the identical Pareto filter + greedy clean+robust ensemble |
-| Manual | RY layer + linear CNOT chain, random angles |
-| HEA | RY layer + all-to-all CNOT, random angles |
-| PVQNN | the post-variational *ansatz expansion*: identity plus ±π/2 RY shifts on each qubit, all features concatenated into a single linear model; no search |
-| Grid | sweep over gene count {2, 4, 6, 8} × CNOT fraction {0, 0.25, 0.5}; K random circuits per cell; best cell on validation |
-| Linear SVM *(classical)* | StandardScaler + LinearSVC on the amplitude-encoded input vector |
-| Poly-2 SVM *(classical)* | SVC with kernel (x·x′ + 1)²; spans every function a linear read-out on Pauli features of amplitude-encoded states can express |
-
-### Statistics
-- Sample std (ddof = 1).
-- Student-t CIs with n − 1 degrees of freedom.
-- Paired t-test over matched seeds (same data split), against the best
-  quantum baseline and against the best classical reference.
-- Holm–Bonferroni adjustment across the configurations of each table.
-- The ablation compares hypervolume in the common accuracy–depth–CNOT space,
-  since HV values from 3- and 4-objective spaces are not comparable.
-
-## Differences from the earlier (QIP) manuscript
-
-These are intentional and must be reflected in the revised text.
-
-1. **Classical-shadow estimator (Sec. 3.3, Eq. 4).**
-   - The manuscript draws bases from {H, RX(π/2)} (two bases) and writes
-     ρ̂ = 3ⁿ/T Σ ⊗ U†|b⟩⟨b|U. Both are wrong for the Pauli shadow protocol.
-   - The code uses three bases (X, Y, Z via H, HS†, I) and the unbiased
-     estimator ρ̂ = ⊗ᵢ (3 Uᵢ†|bᵢ⟩⟨bᵢ|Uᵢ − I).
-   - For a weight-k Pauli the snapshot value is ∏ 3·sᵢ·[basisᵢ = Pᵢ].
-   - The sample complexity is O(3ᵏ log M / ε²), not "O(log M) independent of
-     the observable count".
-2. **Phase-2 evaluation (Tables 2 and 6).** The manuscript compares clean
-   accuracy on the full test set with noisy accuracy on 3–10 samples using
-   10–20 shots. That makes δ (e.g. −0.44 pp at 8 qubits) meaningless. The
-   code evaluates clean and noisy accuracy on the same samples, by default
-   the full validation and test splits, with T = 1000.
-3. **Noise channel.** The manuscript writes a global channel but reports
-   25–29 pp drops at ε = 0.01, which a global channel cannot produce. The
-   code defaults to per-gate local depolarizing and offers `global` as an
-   option. State which one the paper uses.
-4. **Fashion-MNIST classes.** Label 4 is *Coat*, not *Dress* (that is 3).
-   The original experiments and the ICMCSI-2026 version of this work used
-   0 vs 4, so the code uses `classes: [0, 4]`. The manuscript must say
-   "T-shirt/top vs Coat".
-5. **Phase-2 coverage.** The manuscript evaluates noise on the top 1–4
-   circuits of 4 configurations. The code evaluates the whole front on all
-   7 configurations, and the baselines too, so robustness can be compared.
-6. **Greedy objective.** Eq. 7 uses clean accuracy only, while Algorithm 1
-   says "clean + robust". The code implements (1 − β)·clean + β·robust with
-   β = 0.5 and also reports β = 0 and top-K.
-7. **Statistics.**
-   - The manuscript's std values are population std (ddof = 0) while its CIs
-     use ddof = 1. The code uses ddof = 1 everywhere.
-   - The ablation's HV comparison (0.809 vs 0.816) mixed 3- and 4-objective
-     spaces. The code reports `hv_3obj` for both arms.
-8. **Fitness and read-out splits.**
-   - The manuscript says the SVM is "trained on D_val", which would make the
-     fitness training accuracy. The code trains on the fit split and scores
-     on the validation split.
-   - Individual fitness is single-circuit validation accuracy, not "ensemble
-     accuracy".
-9. **New ablations.** Exact expectations vs. shadows (`exact_features`), and
-   greedy vs. top-K / best single. The manuscript lists both as untested
-   limitations.
-10. **Simulator.** The experiments use a NumPy simulator validated against
-    PennyLane 0.38 rather than PennyLane devices directly. Validated:
-    - statevector against `default.qubit`: error 0
-    - noisy expectations against `default.mixed` + `DepolarizingChannel`:
-      error < 1e-12
-    - shadows statistically against `qml.shadow_expval`
-
-    The text should say "implemented in NumPy and validated against
-    PennyLane 0.38".
-11. **"PVQNN" means post-variational QNN** (Huang & Rebentrost,
-    arXiv:2307.10560). Define it in the paper and cite that work for the
-    PVQNN baseline instead of Beer et al. (2020).
-12. **New baselines and variants not in the manuscript.** Equal-budget random
-    search, the classical Linear and Poly-2 SVM references, measured in-loop
-    noise, and readout noise with and without robust-shadow mitigation. The
-    novelty statement must be narrowed in view of Li et al. 2026 (NSGA-II
-    noise-aware QAS). The two prior conference versions of this work must
-    be cited. See [docs/LITERATURE.md](docs/LITERATURE.md).
+| [docs/METHODS.md](docs/METHODS.md) | implementation details: chromosome, operators, dominance, features, determinism, noise, variants, baselines, statistics |
+| [docs/DEVIATIONS.md](docs/DEVIATIONS.md) | where this implementation intentionally differs from the earlier manuscript |
+| [docs/LITERATURE.md](docs/LITERATURE.md) | related work (2023–2026) and the design changes it motivated |
+| [docs/CODE_REVIEW.md](docs/CODE_REVIEW.md) | pre-run code review: findings, fixes, rejected findings |
 
 ## Tests
 

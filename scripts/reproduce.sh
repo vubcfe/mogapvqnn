@@ -35,4 +35,4 @@ echo "== 4/5 tables"
 echo "== 5/5 figures"
 "$PY" scripts/make_figures.py
 
-echo "done: results/tables/SUMMARY.md, results/tables/*.tex, results/figures/*.pdf"
+echo "done: results/tables/SUMMARY.md, results/tables/latex/*.tex, results/figures/*.pdf"

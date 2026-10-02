@@ -106,7 +106,7 @@ operators.
 exact estimator, and tested for unbiasedness. Every `full` run re-evaluates
 its selected ensemble with `phase2.readout_levels`, both raw and mitigated.
 The mitigated features are the raw measurement record rescaled by
-(1 − 2q)^−k, so the comparison is exactly paired → `table_readout.tex`.
+(1 − 2q)^−k, so the comparison is exactly paired → `table_readout_sweep.tex`.
 
 ## 6. Statistics
 
