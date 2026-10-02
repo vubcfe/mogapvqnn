@@ -20,6 +20,12 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+
+# Figures are drawn at the two-column width of Physical Review (7 in), so
+# that they are reproduced at 1:1 scale and text stays legible.
+FULL_WIDTH = 7.0
+plt.rcParams.update({"font.size": 8, "axes.titlesize": 8, "axes.labelsize": 8,
+                     "xtick.labelsize": 7, "ytick.labelsize": 7, "legend.fontsize": 6.5})
 import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -55,7 +61,7 @@ def _scores(full, name):
 
 def fig_accuracy(full, out):
     datasets = [d for d in DATASET_LABELS if any(n.startswith(d + "_") for n in full)]
-    fig, axes = plt.subplots(1, len(datasets), figsize=(4.2 * len(datasets), 3.4), squeeze=False)
+    fig, axes = plt.subplots(1, len(datasets), figsize=(FULL_WIDTH, 2.7), squeeze=False)
     for ax, ds in zip(axes[0], datasets):
         names = sorted([n for n in full if n.rsplit("_", 1)[0] == ds], key=_sort_key)
         x = np.arange(len(names))
@@ -71,14 +77,16 @@ def fig_accuracy(full, out):
         ax.set_xlabel("Qubits")
         ax.grid(axis="y", ls="--", alpha=0.3)
     axes[0][0].set_ylabel("Test accuracy (%)")
-    axes[0][-1].legend(fontsize=7, ncol=2, loc="lower right")
-    fig.tight_layout()
+    handles, labels = axes[0][0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=len(labels), frameon=False,
+               handlelength=1.2, columnspacing=0.9)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
     fig.savefig(out / "fig_accuracy.pdf")
     plt.close(fig)
 
 
 def fig_scaling(full, out):
-    fig, ax = plt.subplots(figsize=(5, 3.4))
+    fig, ax = plt.subplots(figsize=(FULL_WIDTH, 3.0))
     for ds in DATASET_LABELS:
         names = sorted([n for n in full if n.rsplit("_", 1)[0] == ds], key=_sort_key)
         if not names:
@@ -106,7 +114,7 @@ def fig_scaling(full, out):
 
 
 def fig_convergence(full, out, dataset="fashion_mnist"):
-    fig, ax = plt.subplots(figsize=(5, 3.4))
+    fig, ax = plt.subplots(figsize=(FULL_WIDTH, 2.6))
     for name in sorted([n for n in full if n.startswith(dataset + "_")], key=_sort_key):
         hs = [[h["hv"] for h in r["phase1"]["history"]] for r in full[name].values()]
         hs = [h for h in hs if h]
@@ -135,7 +143,7 @@ def fig_pareto(full, out, name="fashion_mnist_6q", seed=0):
     x = [r["depth"] + 2 * r["cnot"] for r in rows]
     y = [100 * r["val_acc"] for r in rows]
     c = [100 * r["phase2"]["robust_val"] if "phase2" in r else np.nan for r in rows]
-    fig, ax = plt.subplots(figsize=(4.6, 3.4))
+    fig, ax = plt.subplots(figsize=(FULL_WIDTH * 0.6, 3.0))
     sc = ax.scatter(x, y, c=c, cmap="viridis", s=45, edgecolor="black", linewidth=0.4)
     fig.colorbar(sc, ax=ax, label="Robust val. accuracy (%)")
     ax.set_xlabel("Complexity (depth + 2 $\\times$ CNOT)")
@@ -151,7 +159,7 @@ def fig_noise(full, out):
     names = sorted(full, key=_sort_key)
     cols = min(4, len(names))
     rows_n = int(np.ceil(len(names) / cols))
-    fig, axes = plt.subplots(rows_n, cols, figsize=(3.2 * cols, 2.8 * rows_n), squeeze=False)
+    fig, axes = plt.subplots(rows_n, cols, figsize=(FULL_WIDTH, 1.9 * rows_n + 0.4), squeeze=False)
     for ax, name in zip(axes.flat, names):
         rs = list(full[name].values())
         levels, _ = common_levels(rs, lambda r: r["ensembles"]["greedy"].get("noisy_test", {}))
@@ -168,14 +176,17 @@ def fig_noise(full, out):
             v = 100 * np.array(v)
             ax.errorbar(eps, v.mean(0), yerr=v.std(0, ddof=1) if len(v) > 1 else None, marker="o", ms=3,
                         color=COLORS.get(m, "black"), lw=2 if m == "mo_ga" else 1, capsize=2, label=_label(m))
-        ax.set_title(name, fontsize=9)
+        ds_, q_ = name.rsplit("_", 1)
+        ax.set_title(f"{DATASET_LABELS.get(ds_, ds_)} {q_}")
         ax.set_xlabel("$\\epsilon$")
         ax.grid(ls="--", alpha=0.3)
     for ax in axes.flat[len(names):]:
         ax.axis("off")
-    axes[0][0].set_ylabel("Test accuracy (%)")
-    axes[0][0].legend(fontsize=6)
-    fig.tight_layout()
+    for r in range(rows_n):
+        axes[r][0].set_ylabel("Test accuracy (%)")
+    handles, labels = axes[0][0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=len(labels), frameon=False)
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
     fig.savefig(out / "fig_noise.pdf")
     plt.close(fig)
 
@@ -184,7 +195,7 @@ def fig_shots(post, out):
     """Accuracy of the selected circuits vs number of shadow rounds T (exact = right-most point)."""
     if not post:
         return
-    fig, ax = plt.subplots(figsize=(5, 3.4))
+    fig, ax = plt.subplots(figsize=(FULL_WIDTH, 3.0))
     for name in sorted(post, key=_sort_key):
         rs = list(post[name].values())
         Ts = sorted({int(k) for r in rs for k in r["shots_sweep"] if k != "exact"})
@@ -201,7 +212,7 @@ def fig_shots(post, out):
     ax.set_xticks(xs, [str(t) for t in Ts] + ["exact"])
     ax.set_xlabel("Shadow rounds $T$")
     ax.set_ylabel("Test accuracy (%)")
-    ax.legend(fontsize=6, ncol=2)
+    ax.legend(loc="center left", bbox_to_anchor=(1.01, 0.5), frameon=False)
     ax.grid(ls="--", alpha=0.3)
     fig.tight_layout()
     fig.savefig(out / "fig_shots.pdf")
