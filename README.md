@@ -32,7 +32,7 @@ This is the code, data and analysis for the article
 | `results/posthoc/` | readout and shot sweeps on the 70 selected ensembles |
 | `results/posthoc_classical/` | tuned linear, Poly-2 and RBF SVM references on the same 70 data splits |
 | `results/tables/`, `results/figures/` | every table (LaTeX/Markdown) and figure of the article |
-| `scripts/` | `reproduce.sh` (whole study), `posthoc.py` (readout/shot sweeps), `classical_tuned.py` (tuned classical SVMs), `make_figures.py`; `distributed/finish.sh` for a suite split across two machines |
+| `scripts/` | `reproduce.sh` (whole study), `posthoc.py` (readout/shot sweeps), `classical_tuned.py` (tuned classical SVMs), `make_illustrations.py` (dataset and circuit illustrations), `make_figures.py`; `distributed/finish.sh` for a suite split across two machines |
 | `docs/` | implementation details, deviations from the earlier manuscript, literature, code review |
 | `tests/` | 56 unit, validation and theory tests |
 

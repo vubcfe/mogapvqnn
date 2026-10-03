@@ -182,10 +182,10 @@ def table_main(full: dict, out: Path) -> dict:
     head = " & ".join(METHOD_LABELS[m] for m in methods)
     tex = (
         "\\begin{table*}[t]\n\\caption{Test accuracy (\\%, mean $\\pm$ sample std over "
-        f"{n_seeds} seeds). Quantum methods share features, shots and read-out; the SVMs are "
+        f"{n_seeds} seeds; $T=1000$ shadow rounds, no gate or readout noise). Quantum methods share features, shots and read-out; the SVMs are "
         "classical references on the same amplitude-encoded inputs (unmarked: $C=1$, untuned"
         + ("; $^\\ast$: hyperparameters selected on the validation split" if any(m in CLASSICAL_TUNED for m in methods)
-           else "") + "). Bold: best mean in each row."
+           else "") + "). Bold: best mean in each row (decided on unrounded means)."
         "}\\label{tab:main}\n"
         f"\\scriptsize\\setlength\\tabcolsep{{3pt}}\n\\begin{{tabular}}{{@{{}}l{'c' * len(methods)}@{{}}}}\n\\toprule\n"
         f" & \\multicolumn{{{1 + len(QUANTUM_BASELINES)}}}{{c}}{{Quantum}} & "
@@ -240,13 +240,13 @@ def table_stats(summary: dict, out: Path) -> None:
         rows_md.append(f"| {_label(name)} | {_pct(mo, digits=2)} | ±{100 * ci:.2f} | "
                        + " | ".join(cell(name, "q", False) + cell(name, "c", False)) + " |")
     tex = (
-        "\\begin{table*}[t]\n\\caption{Paired $t$-tests of MO-GA-PVQNN against the best quantum baseline and the "
+        "\\begin{table*}[t]\n\\caption{Paired $t$-tests of MO-GA-PVQNN against the best other quantum baseline and the "
         "best classical reference of each configuration (matched seeds). CI: 95\\% half-width of the MO-GA-PVQNN "
         "mean; $\\Delta$: mean paired difference with 95\\% CI (pp); best baselines are chosen post hoc by mean "
         "accuracy, so the tests are descriptive; $p_\\mathrm{H}$: Holm-adjusted over the seven configurations, "
         "separately for each family ($p_\\mathrm{H}<0.05$ in bold).}\\label{tab:stats}\n\\scriptsize\\setlength\\tabcolsep{3pt}\n"
         "\\begin{tabular}{@{}lcccccccccc@{}}\n\\toprule\n"
-        " & & & \\multicolumn{4}{c}{vs.\\ best quantum baseline} & \\multicolumn{4}{c}{vs.\\ best classical} \\\\\n"
+        " & & & \\multicolumn{4}{c}{vs.\\ best other quantum baseline} & \\multicolumn{4}{c}{vs.\\ best classical} \\\\\n"
         "Configuration & MO-GA & 95\\% CI & Baseline & $\\Delta$ & $p$ & $p_\\mathrm{H}$ & Classical & $\\Delta$ & $p$ & "
         "$p_\\mathrm{H}$ \\\\\n\\midrule\n" + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table*}\n"
     )
@@ -412,7 +412,7 @@ def table_ablation(runs: dict, out: Path) -> None:
     tex = (
         "\\begin{table}[t]\n\\caption{Ablations (test accuracy \\%, mean $\\pm$ std over matched seeds; the number "
         "of seeds can differ between blocks, so the Full column can differ from Table~\\ref{tab:main}). "
-        "$\\Delta$: full minus variant (pp), paired $t$-test $p$. Front size, hypervolume (computed in the common "
+        "$\\Delta$: full minus variant (pp), paired $t$-test $p$ (not adjusted for multiplicity). Front size, hypervolume (computed in the common "
         "accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant. With three "
         "seeds, $p=0.423$ corresponds to $|t|=1$, which occurs when two of the three seeds give identical accuracies."
         "}\\label{tab:ablation}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n\\begin{tabular}{@{}llccccccc@{}}\n\\toprule\n"
