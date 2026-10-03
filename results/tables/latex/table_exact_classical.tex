@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\caption{Selected MO-GA-PVQNN ensembles refitted on exact expectation values (no gate or readout noise; Table~\ref{tab:shots}) against the tuned classical references on the same data splits (test accuracy \%, mean over $n$ seeds). $\Delta$: paired mean difference, exact-feature ensemble minus reference (pp); $p$: paired $t$-test, not corrected for multiplicity.}\label{tab:exact-classical}
+\footnotesize\setlength\tabcolsep{3pt}
+\begin{tabular}{@{}lccccccccccc@{}}
+\toprule
+ & & & \multicolumn{3}{c}{Linear SVM$^\ast$} & \multicolumn{3}{c}{Poly-2 SVM$^\ast$} & \multicolumn{3}{c}{RBF SVM$^\ast$} \\
+Configuration & $n$ & Exact & Acc. & $\Delta$ & $p$ & Acc. & $\Delta$ & $p$ & Acc. & $\Delta$ & $p$ \\
+\midrule
+Fashion-MNIST 4q & 10 & $75.4\pm3.5$ & $78.0$ & $-2.7$ & 0.030 & $77.4$ & $-2.0$ & 0.161 & $77.6$ & $-2.2$ & 0.145 \\
+Fashion-MNIST 6q & 10 & $91.9\pm1.9$ & $96.3$ & $-4.4$ & $<0.001$ & $95.3$ & $-3.5$ & 0.014 & $96.6$ & $-4.7$ & $<0.001$ \\
+Fashion-MNIST 8q & 10 & $91.0\pm1.8$ & $96.7$ & $-5.7$ & $<0.001$ & $96.0$ & $-5.0$ & 0.001 & $96.6$ & $-5.6$ & $<0.001$ \\
+MNIST 4q & 10 & $83.9\pm2.0$ & $85.5$ & $-1.6$ & 0.001 & $84.1$ & $-0.1$ & 0.899 & $85.5$ & $-1.6$ & 0.040 \\
+MNIST 6q & 10 & $87.9\pm2.4$ & $88.3$ & $-0.5$ & 0.723 & $91.1$ & $-3.3$ & 0.002 & $90.9$ & $-3.0$ & 0.017 \\
+EuroSAT 4q & 10 & $88.0\pm1.7$ & $87.2$ & $+0.8$ & 0.078 & $87.4$ & $+0.6$ & 0.288 & $89.1$ & $-1.0$ & 0.193 \\
+EuroSAT 6q & 10 & $91.9\pm2.8$ & $87.6$ & $+4.2$ & $<0.001$ & $88.1$ & $+3.7$ & $<0.001$ & $90.8$ & $+1.1$ & 0.240 \\
+\botrule
+\end{tabular}
+\end{table*}

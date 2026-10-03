@@ -383,6 +383,8 @@ def table_ablation(runs: dict, out: Path) -> None:
     rows_tex, rows_md = [], []
     for variant, label in blocks:
         other = runs.get(variant, {})
+        if rows_tex and set(full) & set(other):
+            rows_tex.append("\\midrule")                  # visual separation of the blocks
         for name in sorted(set(full) & set(other), key=_sort_key):
             seeds = sorted(set(full[name]) & set(other[name]))
             if not seeds:
@@ -411,7 +413,8 @@ def table_ablation(runs: dict, out: Path) -> None:
         "\\begin{table}[t]\n\\caption{Ablations (test accuracy \\%, mean $\\pm$ std over matched seeds; the number "
         "of seeds can differ between blocks, so the Full column can differ from Table~\\ref{tab:main}). "
         "$\\Delta$: full minus variant (pp), paired $t$-test $p$. Front size, hypervolume (computed in the common "
-        "accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant."
+        "accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant. With three "
+        "seeds, $p=0.423$ corresponds to $|t|=1$, which occurs when two of the three seeds give identical accuracies."
         "}\\label{tab:ablation}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n\\begin{tabular}{@{}llccccccc@{}}\n\\toprule\n"
         "Variant & Configuration & Full & Variant & $\\Delta$ & $p$ & $|\\mathcal{F}_0|$ & HV$_3$ & Time \\\\\n\\midrule\n"
         + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table}\n"
@@ -437,7 +440,9 @@ def table_ensemble(full: dict, out: Path) -> None:
         rows_md.append(f"| {_label(name)} | " + " | ".join(cells_md) + " |")
     tex = (
         "\\begin{table}[t]\n\\caption{Ensemble-selection ablation: test accuracy (\\%) of different ways of "
-        "building the final classifier from the same Pareto front.}\\label{tab:ensemble}\n\\footnotesize\n"
+        "building the final classifier from the same Pareto front ($T=1000$ shadow rounds, no gate or readout noise; "
+        "mean $\\pm$ std over ten seeds). Greedy (clean+robust): the selection rule of Sec.~\\ref{sec:methods}; "
+        "Greedy (clean): clean validation accuracy only; Top-$K$: the $K$ circuits with the best validation accuracy.}\\label{tab:ensemble}\n\\footnotesize\n"
         "\\begin{tabular}{@{}lcccc@{}}\n\\toprule\nConfiguration & " + " & ".join(l for _, l in kinds)
         + " \\\\\n\\midrule\n" + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table}\n"
     )
@@ -579,6 +584,45 @@ def table_shots(post: dict, full: dict, out: Path) -> None:
     _write(out, "table_shots", tex, md)
 
 
+def table_exact_vs_classical(post: dict, full: dict, out: Path) -> None:
+    """Selected ensembles refitted on exact expectations (post-hoc shot sweep)
+    against the tuned classical references, paired over seeds."""
+    refs = [m for m in CLASSICAL_TUNED if m in present_methods(full, CLASSICAL_TUNED)]
+    if not post or not refs:
+        return
+    rows_tex, rows_md = [], []
+    for name in sorted(set(post) & set(full), key=_sort_key):
+        seeds = sorted(s for s in post[name] if s in full[name] and "exact" in post[name][s].get("shots_sweep", {}))
+        if not seeds:
+            continue
+        ex = [post[name][s]["shots_sweep"]["exact"]["ensemble"] for s in seeds]
+        cells_tex, cells_md = [], []
+        for m in refs:
+            b = [method_scores(full[name][s]).get(m, np.nan) for s in seeds]
+            pt = paired(ex, b)
+            p = pt["p"]
+            ptxt = ("$<0.001$" if p < 0.001 else f"{p:.3f}") if np.isfinite(p) else "--"
+            cells_tex += [f"${_pct(mean_sd(b)[0])}$", f"${100 * pt['mean_diff']:+.1f}$", ptxt]
+            cells_md += [_pct(mean_sd(b)[0]), f"{100 * pt['mean_diff']:+.1f}", ptxt.replace("$", "")]
+        mx = mean_sd(ex)
+        rows_tex.append(f"{_label(name)} & {len(seeds)} & ${_pct(*mx)}$ & " + " & ".join(cells_tex) + r" \\")
+        rows_md.append(f"| {_label(name)} | {len(seeds)} | {_pct(*mx).replace(chr(92) + 'pm', ' ± ')} | "
+                       + " | ".join(cells_md) + " |")
+    groups = " & ".join(f"\\multicolumn{{3}}{{c}}{{{METHOD_LABELS[m]}}}" for m in refs)
+    sub = " & ".join(["Acc. & $\\Delta$ & $p$"] * len(refs))
+    tex = ("\\begin{table*}[t]\n\\caption{Selected MO-GA-PVQNN ensembles refitted on exact expectation values "
+           "(no gate or readout noise; Table~\\ref{tab:shots}) against the tuned classical references on the same "
+           "data splits (test accuracy \\%, mean over $n$ seeds). $\\Delta$: paired mean difference, exact-feature "
+           "ensemble minus reference (pp); $p$: paired $t$-test, not corrected for multiplicity.}"
+           "\\label{tab:exact-classical}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n"
+           f"\\begin{{tabular}}{{@{{}}lcc{'ccc' * len(refs)}@{{}}}}\n\\toprule\n"
+           f" & & & {groups} \\\\\nConfiguration & $n$ & Exact & {sub} \\\\\n\\midrule\n"
+           + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table*}\n")
+    md = ("| Configuration | n | Exact | " + " | ".join(f"{_md_label(m)} | Δ | p" for m in refs) + " |\n|"
+          + "---|" * (3 + 3 * len(refs)) + "\n" + "\n".join(rows_md) + "\n")
+    _write(out, "table_exact_classical", tex, md)
+
+
 def aggregate(results_root: Path, out_dir: Path) -> list[str]:
     runs = load_runs(results_root)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -594,13 +638,14 @@ def aggregate(results_root: Path, out_dir: Path) -> list[str]:
     post = load_posthoc(Path(results_root).parent / "posthoc")
     table_readout_sweep(post, out_dir)
     table_shots(post, full, out_dir)
+    table_exact_vs_classical(post, full, out_dir)
     table_ensemble(full, out_dir)
     table_ablation(runs, out_dir)
     table_runtime(full, out_dir)
     figure_data(full, out_dir)
     parts = ["# Results summary\n", "Runs: " + ", ".join(f"{v}={sum(len(s) for s in c.values())}" for v, c in runs.items()) + "\n"]
     for t in ["table_main", "table_stats", "table_pareto", "table_noise", "table_readout",
-              "table_readout_sweep", "table_shots", "table_ensemble", "table_ablation", "table_runtime"]:
+              "table_readout_sweep", "table_shots", "table_exact_classical", "table_ensemble", "table_ablation", "table_runtime"]:
         p = out_dir / "markdown" / f"{t}.md"
         if p.exists():
             parts.append(f"\n## {t}\n\n" + p.read_text())

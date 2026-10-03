@@ -1,5 +1,5 @@
 \begin{table}[t]
-\caption{Ablations (test accuracy \%, mean $\pm$ std over matched seeds; the number of seeds can differ between blocks, so the Full column can differ from Table~\ref{tab:main}). $\Delta$: full minus variant (pp), paired $t$-test $p$. Front size, hypervolume (computed in the common accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant.}\label{tab:ablation}
+\caption{Ablations (test accuracy \%, mean $\pm$ std over matched seeds; the number of seeds can differ between blocks, so the Full column can differ from Table~\ref{tab:main}). $\Delta$: full minus variant (pp), paired $t$-test $p$. Front size, hypervolume (computed in the common accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant. With three seeds, $p=0.423$ corresponds to $|t|=1$, which occurs when two of the three seeds give identical accuracies.}\label{tab:ablation}
 \footnotesize\setlength\tabcolsep{3pt}
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
@@ -12,6 +12,7 @@ Proxy off (3 obj.) & MNIST 4q & $80.2\pm1.0$ & $81.5\pm3.1$ & $-1.3$ & 0.423 & 2
 Proxy off (3 obj.) & MNIST 6q & $84.7\pm4.6$ & $84.5\pm4.9$ & $+0.2$ & 0.423 & 5.0 / 5.0 & 0.668 / 0.636 & 4.7 / 3.6 \\
 Proxy off (3 obj.) & EuroSAT 4q & $80.2\pm2.8$ & $79.5\pm1.8$ & $+0.7$ & 0.423 & 4.0 / 3.3 & 0.648 / 0.651 & 1.7 / 1.7 \\
 Proxy off (3 obj.) & EuroSAT 6q & $81.0\pm2.8$ & $79.3\pm1.9$ & $+1.7$ & 0.199 & 5.0 / 4.3 & 0.641 / 0.648 & 3.5 / 4.9 \\
+\midrule
 Measured noise obj. & Fashion-MNIST 4q & $74.8\pm3.8$ & $75.2\pm4.0$ & $-0.3$ & 0.778 & 6.2 / 16.4 & 0.648 / 0.646 & 2.2 / 4.0 \\
 Measured noise obj. & Fashion-MNIST 6q & $90.8\pm2.6$ & $92.1\pm2.4$ & $-1.3$ & 0.240 & 5.1 / 13.5 & 0.778 / 0.801 & 8.0 / 12.4 \\
 Measured noise obj. & Fashion-MNIST 8q & $87.8\pm3.5$ & $91.1\pm2.4$ & $-3.3$ & 0.013 & 3.4 / 12.2 & 0.763 / 0.793 & 11.7 / 19.3 \\
@@ -19,6 +20,7 @@ Measured noise obj. & MNIST 4q & $82.5\pm3.0$ & $83.8\pm2.3$ & $-1.3$ & 0.033 & 
 Measured noise obj. & MNIST 6q & $85.0\pm3.2$ & $87.2\pm2.1$ & $-2.2$ & 0.016 & 4.2 / 13.1 & 0.687 / 0.743 & 5.7 / 10.5 \\
 Measured noise obj. & EuroSAT 4q & $77.0\pm4.0$ & $82.7\pm2.8$ & $-5.6$ & 0.002 & 3.2 / 15.8 & 0.619 / 0.631 & 1.8 / 3.8 \\
 Measured noise obj. & EuroSAT 6q & $78.5\pm3.0$ & $82.1\pm2.5$ & $-3.6$ & 0.007 & 3.7 / 13.0 & 0.636 / 0.657 & 4.9 / 11.0 \\
+\midrule
 Exact expectations & Fashion-MNIST 4q & $72.5\pm4.0$ & $75.0\pm4.0$ & $-2.5$ & 0.621 & 5.7 / 5.3 & 0.612 / 0.701 & 2.4 / 0.1 \\
 Exact expectations & Fashion-MNIST 6q & $89.3\pm3.3$ & $92.0\pm1.5$ & $-2.7$ & 0.214 & 4.3 / 6.0 & 0.800 / 0.812 & 8.1 / 0.2 \\
 Exact expectations & Fashion-MNIST 8q & $87.1\pm0.4$ & $91.6\pm1.4$ & $-4.4$ & 0.017 & 2.3 / 7.0 & 0.776 / 0.853 & 14.7 / 0.5 \\
