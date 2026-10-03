@@ -28,6 +28,7 @@ echo "== 3/5 experiments (full model + baselines, then ablations)"
 
 echo "== post-hoc readout and shot sweeps on the selected ensembles"
 "$PY" scripts/posthoc.py --jobs "$JOBS"
+"$PY" scripts/classical_tuned.py --jobs "$JOBS"
 
 echo "== 4/5 tables"
 "$PY" -m mogapvqnn aggregate

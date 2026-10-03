@@ -1,0 +1,52 @@
+{
+ "name": "eurosat_4q",
+ "seed": 1,
+ "baselines": {
+  "linear_cv": {
+   "val_acc": 0.9375,
+   "test_acc": 0.855,
+   "params": {
+    "C": 1.0
+   },
+   "classical": true,
+   "seconds": 0.007142829010263085
+  },
+  "poly2_cv": {
+   "val_acc": 0.94375,
+   "test_acc": 0.855,
+   "params": {
+    "standardize": false,
+    "g": 0.1,
+    "coef0": 0.0,
+    "C": 10.0
+   },
+   "classical": true,
+   "seconds": 218.94232995499624
+  },
+  "rbf_cv": {
+   "val_acc": 0.95,
+   "test_acc": 0.9,
+   "params": {
+    "standardize": false,
+    "g": 3.0,
+    "coef0": 0.0,
+    "C": 1.0
+   },
+   "classical": true,
+   "seconds": 0.41341394900518935
+  }
+ },
+ "checks": {
+  "linear": {
+   "stored": 0.855,
+   "rebuilt": 0.855,
+   "ok": true
+  },
+  "poly2": {
+   "stored": 0.61,
+   "rebuilt": 0.61,
+   "ok": true
+  }
+ },
+ "seconds": 219.634524100009
+}

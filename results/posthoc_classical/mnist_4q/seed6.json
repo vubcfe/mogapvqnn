@@ -1,0 +1,52 @@
+{
+ "name": "mnist_4q",
+ "seed": 6,
+ "baselines": {
+  "linear_cv": {
+   "val_acc": 0.875,
+   "test_acc": 0.845,
+   "params": {
+    "C": 0.1
+   },
+   "classical": true,
+   "seconds": 0.013340407007490285
+  },
+  "poly2_cv": {
+   "val_acc": 0.86875,
+   "test_acc": 0.81,
+   "params": {
+    "standardize": true,
+    "g": 0.1,
+    "coef0": 0.0,
+    "C": 100.0
+   },
+   "classical": true,
+   "seconds": 59.50280069700966
+  },
+  "rbf_cv": {
+   "val_acc": 0.86875,
+   "test_acc": 0.865,
+   "params": {
+    "standardize": false,
+    "g": 0.1,
+    "coef0": 0.0,
+    "C": 100.0
+   },
+   "classical": true,
+   "seconds": 0.5099518510105554
+  }
+ },
+ "checks": {
+  "linear": {
+   "stored": 0.845,
+   "rebuilt": 0.845,
+   "ok": true
+  },
+  "poly2": {
+   "stored": 0.865,
+   "rebuilt": 0.865,
+   "ok": true
+  }
+ },
+ "seconds": 60.15813799800526
+}

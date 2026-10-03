@@ -30,8 +30,9 @@ This is the code, data and analysis for the article
 | `configs/paper.yaml` | the exact experimental protocol |
 | `results/runs/` | all 182 run records: 4 variants × 7 configurations; 10 seeds for `full` and `measured_noise`, 3 for `no_proxy` and `exact_features` |
 | `results/posthoc/` | readout and shot sweeps on the 70 selected ensembles |
+| `results/posthoc_classical/` | tuned linear, Poly-2 and RBF SVM references on the same 70 data splits |
 | `results/tables/`, `results/figures/` | every table (LaTeX/Markdown) and figure of the article |
-| `scripts/` | `reproduce.sh` (whole study), `posthoc.py` (readout/shot sweeps), `make_figures.py`; `distributed/finish.sh` for a suite split across two machines |
+| `scripts/` | `reproduce.sh` (whole study), `posthoc.py` (readout/shot sweeps), `classical_tuned.py` (tuned classical SVMs), `make_figures.py`; `distributed/finish.sh` for a suite split across two machines |
 | `docs/` | implementation details, deviations from the earlier manuscript, literature, code review |
 | `tests/` | 56 unit, validation and theory tests |
 
@@ -168,6 +169,11 @@ table is produced from the measured timings stored in every run record.
 
 `scripts/posthoc.py` writes the readout and shot sweeps of every selected
 ensemble to `results/posthoc/<config>/seed<k>.json`.
+`scripts/classical_tuned.py` rebuilds the data split of every `full` run and
+fits tuned linear, Poly-2 and RBF SVMs (hyperparameters selected on the
+validation split, model trained on the fit split) to
+`results/posthoc_classical/<config>/seed<k>.json`; `report.py` and
+`make_figures.py` merge these records when present.
 
 `mogapvqnn aggregate` writes every table twice, as
 `results/tables/latex/<table>.tex` and `results/tables/markdown/<table>.md`, plus
@@ -194,6 +200,7 @@ to `results/figures/`.
 results/
 ├── runs/<variant>/<config>/seed<k>.json   run records (version-controlled)
 ├── posthoc/<config>/seed<k>.json          post-hoc sweeps (version-controlled)
+├── posthoc_classical/<config>/seed<k>.json  tuned classical SVMs (version-controlled)
 ├── tables/{latex,markdown,data}/          generated tables and figure data
 ├── figures/                               generated PDF figures
 └── _local/                                logs and scheduling files (git-ignored)
