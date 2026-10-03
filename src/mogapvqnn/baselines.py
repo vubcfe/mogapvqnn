@@ -20,6 +20,16 @@ read-out on such features (cf. Bermejo et al. 2024; Jerbi et al. 2024):
 
 * ``linear``  StandardScaler + LinearSVC on the input vector
 * ``poly2``   SVC with kernel (x.x' + 1)^2 on the input vector
+
+Tuned classical references (``*_cv``): hyperparameters are chosen on the
+validation split and the model is trained on the fit split, the same
+protocol that selects circuits for MO-GA-PVQNN and Grid. Ties are broken
+towards the simpler model (earlier grid entry, i.e. smaller C / gamma).
+
+* ``linear_cv``  StandardScaler + LinearSVC, C in TUNE_C
+* ``poly2_cv``   SVC, kernel (gamma x.x' + r)^2 with r in {0, 1}; optional
+                 standardisation; gamma = g / (D Var x) with g in TUNE_GAMMA
+* ``rbf_cv``     SVC, RBF kernel; optional standardisation; gamma as above
 """
 
 from __future__ import annotations
@@ -27,7 +37,11 @@ from __future__ import annotations
 import time
 from concurrent.futures import Executor
 
+import itertools
+
 import numpy as np
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 from .circuits import (
@@ -42,7 +56,7 @@ from .circuits import (
     stable_hash32,
     to_json,
 )
-from .classifier import accuracy, fit_linear
+from .classifier import accuracy, fit_linear, make_linear_model
 from .config import RunConfig
 from .nsga2 import assign_rank_and_crowding, environmental_selection
 from .search import CircuitEvaluator, greedy_ensemble, needs_measured_robustness, noise_levels, objective_vector
@@ -203,6 +217,66 @@ def poly2_baseline(cfg, ev, test_p2, noise_eval, executor=None):
     return {"val_acc": acc("val"), "test_acc": acc("test"), "classical": True}
 
 
+TUNE_C = (1e-3, 1e-2, 1e-1, 1.0, 1e1, 1e2, 1e3)
+TUNE_GAMMA = (0.1, 0.3, 1.0, 3.0, 10.0)
+
+
+def _gamma_scale(X: np.ndarray) -> float:
+    """sklearn's gamma='scale', 1 / (n_features * Var X), computed explicitly
+    so that the multiplier grid is defined on the data actually fed to the SVC."""
+    v = float(X.var())
+    return 1.0 / (X.shape[1] * v) if v > 0 else 1.0
+
+
+def _kernel_svc(kind: str, standardize: bool, g: float, coef0: float, C: float, X_fit: np.ndarray):
+    Z = StandardScaler().fit_transform(X_fit) if standardize else X_fit
+    gamma = g * _gamma_scale(Z)
+    if kind == "poly2":
+        svc = SVC(kernel="poly", degree=2, gamma=gamma, coef0=coef0, C=C)
+    else:
+        svc = SVC(kernel="rbf", gamma=gamma, C=C)
+    return make_pipeline(StandardScaler(), svc) if standardize else svc
+
+
+def tuning_grid(kind: str) -> list[dict]:
+    if kind == "linear":
+        return [{"C": C} for C in TUNE_C]
+    coef0s = (0.0, 1.0) if kind == "poly2" else (0.0,)
+    return [{"standardize": st, "g": g, "coef0": r, "C": C}
+            for st, g, r, C in itertools.product((False, True), TUNE_GAMMA, coef0s, TUNE_C)]
+
+
+def tuned_svm(kind: str, X_fit, y_fit, X_val, y_val, max_iter: int = 20000) -> tuple[object, dict, float]:
+    """Return (model trained on fit, chosen params, validation accuracy)."""
+    best = None
+    for params in tuning_grid(kind):
+        if kind == "linear":
+            model = make_linear_model(params["C"], max_iter)
+        else:
+            model = _kernel_svc(kind, params["standardize"], params["g"], params["coef0"], params["C"], X_fit)
+        model.fit(X_fit, y_fit)
+        acc = accuracy(model.predict(X_val), y_val)
+        if best is None or acc > best[2]:
+            best = (model, params, acc)
+    return best
+
+
+def _tuned_baseline(kind: str):
+    def run(cfg, ev, test_p2, noise_eval, executor=None):
+        X = {s: _input_states(ev, s) for s in ("fit", "val", "test")}
+        model, params, val = tuned_svm(kind, X["fit"], ev.labels["fit"], X["val"], ev.labels["val"],
+                                       cfg.classifier.max_iter)
+        return {"val_acc": val, "test_acc": accuracy(model.predict(X["test"]), ev.labels["test"]),
+                "params": params, "classical": True}
+    run.__name__ = f"{kind}_cv_baseline"
+    return run
+
+
+linear_cv_baseline = _tuned_baseline("linear")
+poly2_cv_baseline = _tuned_baseline("poly2")
+rbf_cv_baseline = _tuned_baseline("rbf")
+
+
 BASELINES = {
     "random": random_ensemble,
     "random_search": random_search_baseline,
@@ -212,8 +286,11 @@ BASELINES = {
     "grid": grid_baseline,
     "linear": linear_baseline,
     "poly2": poly2_baseline,
+    "linear_cv": linear_cv_baseline,
+    "poly2_cv": poly2_cv_baseline,
+    "rbf_cv": rbf_cv_baseline,
 }
-CLASSICAL_BASELINES = frozenset({"linear", "poly2"})
+CLASSICAL_BASELINES = frozenset({"linear", "poly2", "linear_cv", "poly2_cv", "rbf_cv"})
 
 
 def run_baselines(cfg: RunConfig, ev: CircuitEvaluator, test_p2: str, noise_eval: bool = True, log=None,

@@ -30,28 +30,35 @@ import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from mogapvqnn.report import (  # noqa: E402
-    ALL_METHODS,
     CLASSICAL_BASELINES,
+    CLASSICAL_TUNED,
+    CLASSICAL_UNTUNED,
     DATASET_LABELS,
     METHOD_LABELS,
     QUANTUM_BASELINES,
     _best,
     _sort_key,
     common_levels,
+    load_classical,
     load_posthoc,
     load_runs,
     mean_sd,
+    merge_classical,
     method_scores,
+    present_methods,
 )
 
 COLORS = {"mo_ga": "#D62728", "random": "#AEC7E8", "random_search": "#1F77B4", "manual": "#FFBB78",
-          "hea": "#98DF8A", "pvqnn": "#C5B0D5", "grid": "#C49C94", "linear": "#7F7F7F", "poly2": "#BCBD22"}
+          "hea": "#98DF8A", "pvqnn": "#C5B0D5", "grid": "#C49C94", "linear": "#7F7F7F", "poly2": "#BCBD22",
+          "linear_cv": "#7F7F7F", "poly2_cv": "#BCBD22", "rbf_cv": "#17BECF"}
 DS_COLORS = {"fashion_mnist": "#D62728", "mnist": "#1F77B4", "eurosat": "#2CA02C"}
-METHODS = ALL_METHODS
+# Bars of the accuracy figure: tuned classical references replace the untuned
+# ones once scripts/classical_tuned.py has been run (set in main()).
+METHODS = ["mo_ga"] + QUANTUM_BASELINES + CLASSICAL_UNTUNED
 
 
 def _label(m):
-    return METHOD_LABELS.get(m, m).replace("~", " ")
+    return METHOD_LABELS.get(m, m).replace("~", " ").replace("$^\\ast$", " (tuned)")
 
 
 def _scores(full, name):
@@ -96,7 +103,7 @@ def fig_scaling(full, out):
         best_q, best_c = [], []
         for n in names:
             ms = {m: mean_sd(v) for m, v in _scores(full, n).items()}
-            bq, bc = _best(QUANTUM_BASELINES, ms), _best(CLASSICAL_BASELINES, ms)
+            bq, bc = _best(QUANTUM_BASELINES, ms), _best([m for m in CLASSICAL_BASELINES if m in ms], ms)
             best_q.append(100 * ms[bq][0] if bq else np.nan)
             best_c.append(100 * ms[bc][0] if bc else np.nan)
         col = DS_COLORS.get(ds, "black")
@@ -231,6 +238,9 @@ def main():
     full = load_runs(Path(a.runs)).get("full", {})
     if not full:
         raise SystemExit("no finished 'full' runs found")
+    global METHODS
+    if merge_classical(full, load_classical(Path(a.runs).parent / "posthoc_classical")):
+        METHODS = ["mo_ga"] + QUANTUM_BASELINES + present_methods(full, CLASSICAL_TUNED)
     fig_accuracy(full, out)
     fig_scaling(full, out)
     fig_convergence(full, out)

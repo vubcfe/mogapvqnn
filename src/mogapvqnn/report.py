@@ -20,9 +20,12 @@ from scipy import stats
 METHOD_LABELS = {
     "mo_ga": "MO-GA-PVQNN", "random": "Random", "random_search": "Rand.~search", "manual": "Manual",
     "hea": "HEA", "pvqnn": "PVQNN", "grid": "Grid", "linear": "Linear SVM", "poly2": "Poly-2 SVM",
+    "linear_cv": "Linear SVM$^\\ast$", "poly2_cv": "Poly-2 SVM$^\\ast$", "rbf_cv": "RBF SVM$^\\ast$",
 }
 QUANTUM_BASELINES = ["random", "random_search", "manual", "hea", "pvqnn", "grid"]
-CLASSICAL_BASELINES = ["linear", "poly2"]
+CLASSICAL_UNTUNED = ["linear", "poly2"]
+CLASSICAL_TUNED = ["linear_cv", "poly2_cv", "rbf_cv"]     # scripts/classical_tuned.py; '*' in tables
+CLASSICAL_BASELINES = CLASSICAL_UNTUNED + CLASSICAL_TUNED
 ALL_METHODS = ["mo_ga"] + QUANTUM_BASELINES + CLASSICAL_BASELINES
 DATASET_LABELS = {"fashion_mnist": "Fashion-MNIST", "mnist": "MNIST", "eurosat": "EuroSAT"}
 CONFIG_ORDER = ["fashion_mnist", "mnist", "eurosat"]
@@ -99,6 +102,35 @@ def method_scores(run: dict) -> dict[str, float]:
     return s
 
 
+def present_methods(full: dict, methods) -> list[str]:
+    """The subset of `methods` that has a result in at least one run."""
+    have = {m for runs in full.values() for r in runs.values() for m in method_scores(r)}
+    return [m for m in methods if m in have]
+
+
+def load_classical(root: Path) -> dict[str, dict[int, dict]]:
+    """classical[config][seed] from scripts/classical_tuned.py output (may be empty)."""
+    out: dict = defaultdict(dict)
+    for p in sorted(Path(root).glob("*/seed*.json")):
+        with open(p) as f:
+            r = json.load(f)
+        out[r["name"]][int(r["seed"])] = r
+    return out
+
+
+def merge_classical(full: dict, classical: dict) -> int:
+    """Add the tuned classical references to the in-memory run records; the
+    files on disk are not modified. Returns the number of runs merged."""
+    n = 0
+    for name, runs in full.items():
+        for seed, r in runs.items():
+            extra = classical.get(name, {}).get(seed)
+            if extra:
+                r.setdefault("baselines", {}).update(extra["baselines"])
+                n += 1
+    return n
+
+
 def common_levels(runs: list[dict], getter) -> tuple[list[str], str | None]:
     """Noise-level keys present in every run (sorted by value) and the key of
     the clean level (value 0), robust to formatting and to differing grids."""
@@ -108,6 +140,10 @@ def common_levels(runs: list[dict], getter) -> tuple[list[str], str | None]:
     levels = sorted(set.intersection(*sets), key=float)
     clean = next((e for e in levels if float(e) == 0.0), None)
     return levels, clean
+
+
+def _md_label(m: str) -> str:
+    return METHOD_LABELS[m].replace("~", " ").replace("$^\\ast$", "*")
 
 
 def _pct(m, s=None, digits=1):
@@ -126,7 +162,8 @@ def _write(out: Path, name: str, latex: str, md: str) -> None:
 # --------------------------------------------------------------------------- #
 
 def table_main(full: dict, out: Path) -> dict:
-    methods = ALL_METHODS
+    methods = present_methods(full, ALL_METHODS)
+    classical = [m for m in methods if m in CLASSICAL_BASELINES]
     rows_tex, rows_md, summary = [], [], {}
     for name in sorted(full, key=_sort_key):
         seeds = sorted(full[name])
@@ -145,15 +182,17 @@ def table_main(full: dict, out: Path) -> dict:
     head = " & ".join(METHOD_LABELS[m] for m in methods)
     tex = (
         "\\begin{table*}[t]\n\\caption{Test accuracy (\\%, mean $\\pm$ sample std over "
-        f"{n_seeds} seeds). Quantum methods share features, shots and read-out; Linear/Poly-2 SVM are "
-        "classical references on the same amplitude-encoded inputs. Bold: best mean in each row."
+        f"{n_seeds} seeds). Quantum methods share features, shots and read-out; the SVMs are "
+        "classical references on the same amplitude-encoded inputs (unmarked: $C=1$, untuned"
+        + ("; $^\\ast$: hyperparameters selected on the validation split" if any(m in CLASSICAL_TUNED for m in methods)
+           else "") + "). Bold: best mean in each row."
         "}\\label{tab:main}\n"
         f"\\scriptsize\\setlength\\tabcolsep{{3pt}}\n\\begin{{tabular}}{{@{{}}l{'c' * len(methods)}@{{}}}}\n\\toprule\n"
         f" & \\multicolumn{{{1 + len(QUANTUM_BASELINES)}}}{{c}}{{Quantum}} & "
-        f"\\multicolumn{{{len(CLASSICAL_BASELINES)}}}{{c}}{{Classical}} \\\\\n"
+        f"\\multicolumn{{{len(classical)}}}{{c}}{{Classical}} \\\\\n"
         f"Configuration & {head} \\\\\n\\midrule\n" + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table*}\n"
     )
-    md = "| Configuration | " + " | ".join(METHOD_LABELS[m].replace("~", " ") for m in methods) + " |\n|" + "---|" * (len(methods) + 1) + "\n" + "\n".join(rows_md) + "\n"
+    md = "| Configuration | " + " | ".join(_md_label(m) for m in methods) + " |\n|" + "---|" * (len(methods) + 1) + "\n" + "\n".join(rows_md) + "\n"
     _write(out, "table_main", tex, md)
     return summary
 
@@ -166,7 +205,7 @@ def table_stats(summary: dict, out: Path) -> None:
     for name in names:
         sc, ms = summary[name]["scores"], summary[name]["mean_sd"]
         q = _best(QUANTUM_BASELINES, ms)
-        c = _best(CLASSICAL_BASELINES, ms)
+        c = _best([m for m in CLASSICAL_BASELINES if m in ms], ms)
         comp[name] = {
             "q": (q, paired(sc["mo_ga"], sc[q]) if q else None),
             "c": (c, paired(sc["mo_ga"], sc[c]) if c else None),
@@ -187,7 +226,7 @@ def table_stats(summary: dict, out: Path) -> None:
         ptxt = f"{p:.3f}" if np.isfinite(p) else "--"
         if tex and np.isfinite(p) and p < 0.05:
             ptxt = f"$\\mathbf{{{ptxt}}}$"
-        lab = METHOD_LABELS[m] if tex else METHOD_LABELS[m].replace("~", " ")
+        lab = METHOD_LABELS[m] if tex else _md_label(m)
         diff = f"{100 * pt['mean_diff']:+.2f}\\pm{100 * pt['ci_diff']:.2f}"
         return [f"{lab} ({_pct(ms[m][0], digits=1)})", f"${diff}$" if tex else diff.replace("\\pm", " ± "),
                 f"{pt['p']:.3f}" if np.isfinite(pt["p"]) else "--", ptxt]
@@ -203,8 +242,9 @@ def table_stats(summary: dict, out: Path) -> None:
     tex = (
         "\\begin{table*}[t]\n\\caption{Paired $t$-tests of MO-GA-PVQNN against the best quantum baseline and the "
         "best classical reference of each configuration (matched seeds). CI: 95\\% half-width of the MO-GA-PVQNN "
-        "mean; $\\Delta$: mean paired difference with 95\\% CI (pp); $p_\\mathrm{H}$: Holm-adjusted over the "
-        "configurations ($p_\\mathrm{H}<0.05$ in bold).}\\label{tab:stats}\n\\scriptsize\\setlength\\tabcolsep{3pt}\n"
+        "mean; $\\Delta$: mean paired difference with 95\\% CI (pp); best baselines are chosen post hoc by mean "
+        "accuracy, so the tests are descriptive; $p_\\mathrm{H}$: Holm-adjusted over the seven configurations, "
+        "separately for each family ($p_\\mathrm{H}<0.05$ in bold).}\\label{tab:stats}\n\\scriptsize\\setlength\\tabcolsep{3pt}\n"
         "\\begin{tabular}{@{}lcccccccccc@{}}\n\\toprule\n"
         " & & & \\multicolumn{4}{c}{vs.\\ best quantum baseline} & \\multicolumn{4}{c}{vs.\\ best classical} \\\\\n"
         "Configuration & MO-GA & 95\\% CI & Baseline & $\\Delta$ & $p$ & $p_\\mathrm{H}$ & Classical & $\\Delta$ & $p$ & "
@@ -273,10 +313,12 @@ def table_noise(full: dict, out: Path, name: str = "table_noise", note: str = ""
     nz0 = nz[0] if nz else "--"
     head = " & ".join("clean" if float(e) == 0 else f"$\\epsilon={e}$" for e in levels)
     dhead = " & ".join(f"$\\delta_\\mathrm{{{METHOD_LABELS[b].replace('~', ' ')}}}$" for b in compare)
+    T = next(iter(next(iter(full.values())).values()))["config"]["shadows"]["max_shots"]
     tex = (
         "\\begin{table*}[t]\n\\caption{Phase~2 noise robustness of the MO-GA-PVQNN ensemble under per-gate "
         f"depolarizing noise{note} (test accuracy \\%, mean $\\pm$ std). Clean and noisy accuracies are measured on "
-        f"the same $N$ test samples with the same shot budget. $\\delta$: accuracy change at $\\epsilon={nz0}$ (pp)."
+        f"the same $N$ test samples with $T={T}$ shadow rounds, on a Phase~2 shadow record independent of that "
+        f"of Table~\\ref{{{{tab:main}}}}; read-outs are trained on clean features. $\\delta$: accuracy change at $\\epsilon={nz0}$ (pp)."
         f"}}\\label{{tab:{name.replace('table_', '')}}}\n\\scriptsize\\setlength\\tabcolsep{{3pt}}\n"
         f"\\begin{{tabular}}{{@{{}}lc{'c' * len(levels)}c{'c' * len(compare)}@{{}}}}\n\\toprule\n"
         f"Configuration & $N$ & {head} & $\\delta$ & {dhead} \\\\\n\\midrule\n"
@@ -366,7 +408,8 @@ def table_ablation(runs: dict, out: Path) -> None:
     if not rows_tex:
         return
     tex = (
-        "\\begin{table}[t]\n\\caption{Ablations (test accuracy \\%, mean $\\pm$ std over matched seeds). "
+        "\\begin{table}[t]\n\\caption{Ablations (test accuracy \\%, mean $\\pm$ std over matched seeds; the number "
+        "of seeds can differ between blocks, so the Full column can differ from Table~\\ref{tab:main}). "
         "$\\Delta$: full minus variant (pp), paired $t$-test $p$. Front size, hypervolume (computed in the common "
         "accuracy--depth--CNOT space for both arms) and Phase~1 time (min) are given as full / variant."
         "}\\label{tab:ablation}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n\\begin{tabular}{@{}llccccccc@{}}\n\\toprule\n"
@@ -496,8 +539,9 @@ def table_readout_sweep(post: dict, out: Path) -> None:
         rows_md.append(f"| {_label(name)} | {len(rs)} | " + " | ".join(cell(m, False) for m in ms) + " |")
     head = " & ".join(h for _, _, h in cols)
     tex = ("\\begin{table*}[t]\n\\caption{Readout-error sweep on the selected ensembles (no gate noise; "
+           "same Phase~2 test samples and shadow record as Table~\\ref{tab:noise}; "
            "test accuracy \\%, mean $\\pm$ std over seeds; $n$: seeds). raw: unmitigated; mit.: robust-shadow "
-           "correction of the same measurement record.}\\label{tab:readout-sweep}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n"
+           "correction of the same measurement record (assumes known $q$ and independent symmetric flips).}\\label{tab:readout-sweep}\n\\footnotesize\\setlength\\tabcolsep{3pt}\n"
            f"\\begin{{tabular}}{{@{{}}lc{'c' * len(cols)}@{{}}}}\n\\toprule\nConfiguration & $n$ & {head} \\\\\n\\midrule\n"
            + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table*}\n")
     md = ("| Configuration | n | " + " | ".join(h.replace("$", "") for _, _, h in cols) + " |\n|"
@@ -525,8 +569,8 @@ def table_shots(post: dict, full: dict, out: Path) -> None:
                        + f" | {100 * gap['mean_diff']:+.1f} | {p_txt} |")
     head = " & ".join("exact" if k == "exact" else f"$T={k}$" for k in keys)
     tex = ("\\begin{table*}[t]\n\\caption{Shot-noise study: the selected MO-GA-PVQNN circuits with read-outs "
-           "refitted on classical-shadow features with $T$ rounds, or on exact expectation values (test accuracy \\%, "
-           f"mean $\\pm$ std). $\\Delta$: exact minus $T={keys[0]}$ (pp), paired $t$-test.}}\\label{{tab:shots}}\n"
+           "refitted on classical-shadow features with $T$ rounds, or on exact expectation values (no gate or "
+           f"readout noise; test accuracy \\%, mean $\\pm$ std over $n$ seeds). $\\Delta$: exact minus $T={keys[0]}$ (pp), paired $t$-test.}}\\label{{tab:shots}}\n"
            "\\footnotesize\n"
            f"\\begin{{tabular}}{{@{{}}lc{'c' * len(keys)}cc@{{}}}}\n\\toprule\nConfiguration & $n$ & {head} & $\\Delta$ & $p$ \\\\\n"
            "\\midrule\n" + "\n".join(rows_tex) + "\n\\botrule\n\\end{tabular}\n\\end{table*}\n")
@@ -541,6 +585,7 @@ def aggregate(results_root: Path, out_dir: Path) -> list[str]:
     full = runs.get("full", {})
     if not full:
         raise SystemExit(f"no 'full' runs found under {results_root}")
+    merge_classical(full, load_classical(Path(results_root).parent / "posthoc_classical"))
     summary = table_main(full, out_dir)
     table_stats(summary, out_dir)
     table_pareto(full, out_dir)

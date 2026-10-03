@@ -1,0 +1,52 @@
+{
+ "name": "fashion_mnist_8q",
+ "seed": 3,
+ "baselines": {
+  "linear_cv": {
+   "val_acc": 0.9875,
+   "test_acc": 0.98,
+   "params": {
+    "C": 0.1
+   },
+   "classical": true,
+   "seconds": 0.020229813002515584
+  },
+  "poly2_cv": {
+   "val_acc": 0.9875,
+   "test_acc": 0.9733333333333334,
+   "params": {
+    "standardize": false,
+    "g": 0.1,
+    "coef0": 0.0,
+    "C": 100.0
+   },
+   "classical": true,
+   "seconds": 0.37883965599758085
+  },
+  "rbf_cv": {
+   "val_acc": 0.9875,
+   "test_acc": 0.9733333333333334,
+   "params": {
+    "standardize": false,
+    "g": 0.1,
+    "coef0": 0.0,
+    "C": 100.0
+   },
+   "classical": true,
+   "seconds": 0.2649239260063041
+  }
+ },
+ "checks": {
+  "linear": {
+   "stored": 0.9733333333333334,
+   "rebuilt": 0.9733333333333334,
+   "ok": true
+  },
+  "poly2": {
+   "stored": 0.98,
+   "rebuilt": 0.98,
+   "ok": true
+  }
+ },
+ "seconds": 0.8371129129955079
+}

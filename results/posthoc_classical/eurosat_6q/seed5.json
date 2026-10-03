@@ -1,0 +1,52 @@
+{
+ "name": "eurosat_6q",
+ "seed": 5,
+ "baselines": {
+  "linear_cv": {
+   "val_acc": 0.875,
+   "test_acc": 0.86,
+   "params": {
+    "C": 1.0
+   },
+   "classical": true,
+   "seconds": 0.0153424769960111
+  },
+  "poly2_cv": {
+   "val_acc": 0.8916666666666667,
+   "test_acc": 0.84,
+   "params": {
+    "standardize": true,
+    "g": 0.1,
+    "coef0": 1.0,
+    "C": 1000.0
+   },
+   "classical": true,
+   "seconds": 1.123365217994433
+  },
+  "rbf_cv": {
+   "val_acc": 0.9166666666666666,
+   "test_acc": 0.895,
+   "params": {
+    "standardize": false,
+    "g": 3.0,
+    "coef0": 0.0,
+    "C": 0.001
+   },
+   "classical": true,
+   "seconds": 0.292155578994425
+  }
+ },
+ "checks": {
+  "linear": {
+   "stored": 0.86,
+   "rebuilt": 0.86,
+   "ok": true
+  },
+  "poly2": {
+   "stored": 0.62,
+   "rebuilt": 0.62,
+   "ok": true
+  }
+ },
+ "seconds": 1.6924775329971453
+}

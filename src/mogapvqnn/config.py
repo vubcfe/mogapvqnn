@@ -70,7 +70,8 @@ class EnsembleConfig:
 @dataclass
 class BaselineConfig:
     enabled: list = field(default_factory=lambda: [
-        "random", "random_search", "manual", "hea", "pvqnn", "grid", "linear", "poly2"])
+        "random", "random_search", "manual", "hea", "pvqnn", "grid", "linear", "poly2",
+        "linear_cv", "poly2_cv", "rbf_cv"])
     random_search_budget: int = 0     # 0 = same number of unique circuit evaluations as the GA run
     manual_layers: int = 1
     hea_layers: int = 1
